@@ -139,3 +139,40 @@ start_desktop.cmd
 本项目自身代码**尚未选定许可证**，默认按「保留所有权利」理解；想复用、二改或商用，请先开 issue 说明用途。
 
 随仓库分发的第三方组件（SnowLuma 适配器为 **GPL-3.0-or-later**）、运行时镜像、Python 依赖的来源与许可，见 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)。其中 SnowLuma 目录与 MaiBot 补丁文件的许可**不随本仓库的许可改变**。
+
+---
+
+## 致谢
+
+这套东西能跑起来，靠的不是本仓库的代码量。真正干活的是下面这些项目，如果它们对你有用，去给它们点个 Star。
+
+### 对话核心
+
+**MaiBot（麦麦）** —— https://github.com/Mai-with-u/MaiBot
+
+回复生成、planner、表情包理解与挑选、工具调用全在它那里。本项目不碰它的主程序，只往它的配置（`docker-config/mmc`）和会话提示里写东西，外加两个覆盖补丁。
+
+### QQ 接入
+
+**LLBot / LLOneBot** —— https://github.com/LLOneBot/LLOneBot
+
+OneBot 11 协议端。QQ 登录、收发消息、群通知都是它做的，本项目只是通过 WebSocket 订阅它的事件流。
+
+**NapCat** —— https://github.com/NapNeko/NapCatQQ
+
+同一代 NTQQ 上的 OneBot 11 实现，早期用的就是它；`napcat_default` 这个网络名从那时沿用至今。可与 LLBot 互相替换，但同一时间只能有一个登录同一个号。
+
+**MaiBot-SnowLuma-Adapter** —— https://github.com/Mai-with-u/MaiBot-SnowLuma-Adapter
+
+MaiBot 的 QQ 适配插件（**GPL-3.0-or-later**），仓库内附带了它的完整源码和许可证全文。
+
+### 底座与服务
+
+- **Docker / Docker Compose** —— 整套部署的载体
+- **DeepSeek API** —— 对话、情绪判定、困惑时联网查证
+- **trafilatura** —— 网页正文抽取
+- **requests / websocket-client / paramiko / pywebview** —— HTTP、OneBot WebSocket、SSH 隧道、桌面窗口
+
+### 一句实话
+
+本项目的贡献大概只在于那层设计：记忆会衰减、好感会漂移、精力会耗尽。没有上面这些项目，它连一句话都发不出去。
