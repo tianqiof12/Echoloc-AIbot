@@ -6,7 +6,7 @@
 
 这个项目把力气放在被省略掉的那一层——**长期状态**。群聊被切成事件、情绪、话题和人物印象，每条记忆带激活度并随时间衰减；好感度、心情、精力都是会变化的持久值，而不是每轮重算的临时数。于是她会有很像人的几个毛病：记得上周聊过什么、隔两周只剩个印象；对某个人态度好，换到另一个群还是同样的态度；聊久了会累，累了就少说话；心情被一句话带跑之后会慢慢回正。
 
-对话生成交给 [MaiBot](https://github.com/MaiMbot-Pro-Max/MaiBot)（项目里叫「麦麦」），QQ 接入交给 [LLBot](https://github.com/LLOneBot)：这一层负责的是**她怎么记住、怎么忘、累不累、想不想说话**。
+对话生成交给 [MaiBot](https://github.com/Mai-with-u/MaiBot)（项目里叫「麦麦」），QQ 接入交给 [LLBot](https://github.com/LLOneBot)：这一层负责的是**她怎么记住、怎么忘、累不累、想不想说话**。
 
 ## 有什么不一样
 
@@ -104,7 +104,7 @@ start_desktop.cmd
 
 | 项目 | 在这里的角色 | 上游 |
 | --- | --- | --- |
-| **LLBot** | OneBot 11 协议端：QQ 登录、收发消息、群通知（当前使用） | https://github.com/LLOneBot/LLOneBot |
+| **LLBot** | OneBot 11 协议端：QQ 登录、收发消息、群通知（当前使用） | https://github.com/LLOneBot/LuckyLilliaBot |
 | **NapCat** | 同样是一套 NTQQ 上的 OneBot 11 实现，可替换 LLBot 使用；容器网络名 `napcat_default` 就是从它沿用下来的 | https://github.com/NapNeko/NapCatQQ |
 | **MaiBot（麦麦）** | 对话核心：回复生成、planner、表情包理解与挑选、工具调用 | https://github.com/Mai-with-u/MaiBot |
 | **SnowLuma Adapter** | MaiBot 的 QQ 适配插件，让它能对接上面的协议端 | https://github.com/Mai-with-u/MaiBot-SnowLuma-Adapter |
@@ -154,7 +154,7 @@ start_desktop.cmd
 
 ### QQ 接入
 
-**LLBot / LLOneBot** —— https://github.com/LLOneBot/LLOneBot
+**LLBot / LLOneBot** —— https://github.com/LLOneBot/LuckyLilliaBot
 
 OneBot 11 协议端。QQ 登录、收发消息、群通知都是它做的，本项目只是通过 WebSocket 订阅它的事件流。
 

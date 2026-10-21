@@ -32,7 +32,7 @@
 
 | 组件 | 获取方式 | 用途 | 许可 |
 | --- | --- | --- | --- |
-| **LLBot** | `docker pull linyuchen/llbot:latest` | OneBot 11 协议端，负责 QQ 登录与收发 | 上游为 LLOneBot 项目（https://github.com/LLOneBot/LLOneBot）。镜像与仓库内均未附许可证文件，**以官方仓库为准** |
+| **LLBot** | `docker pull linyuchen/llbot:latest` | OneBot 11 协议端，负责 QQ 登录与收发 | 上游为 LLOneBot 项目（https://github.com/LLOneBot/LuckyLilliaBot）。镜像与仓库内均未附许可证文件，**以官方仓库为准** |
 | **PMHQ** | `docker pull linyuchen/pmhq:latest` | LLBot 的 hook 辅助进程 | 同上，**以官方发布为准** |
 | **MaiBot** | `docker pull sengokucola/maibot:latest` | 对话核心：planner、表情包、工具调用 | 上游为 MaiBot 项目（https://github.com/Mai-with-u/MaiBot）。本仓库只提供两个覆盖补丁，见下节，**主程序许可以官方仓库为准** |
 
