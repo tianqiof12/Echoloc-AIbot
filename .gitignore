@@ -22,3 +22,6 @@ ui_settings.local.json
 # 第三方插件的历史备份文件
 *.bak.llbot
 *.bak.llbot2
+
+# 发布构建产物（走 Releases 附件，不进仓库历史）
+dist/

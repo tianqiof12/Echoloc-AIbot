@@ -36,6 +36,15 @@
 └─ docs/                   使用说明、端口表、迁移步骤、密钥占位符清单
 ```
 
+## 下载
+
+发布包挂了两个附件，按需取：
+
+- **服务器端** `echoloc-server-v1.0.0.tar.gz` —— Linux，含 `server/` 全套与文档
+- **桌面端** `echoloc-desktop-v1.0.0.zip` —— Windows，pywebview 遥控面板
+
+安装步骤、校验和见 [docs/release.md](docs/release.md)。桌面端不跑麦麦和 LLBot，它通过 SSH 隧道连服务器上已经跑着的两个 WebUI。
+
 ## 快速开始
 
 **完整步骤看 [docs/usage.md](docs/usage.md)**，这里只给最短路径：
