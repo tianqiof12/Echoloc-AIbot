@@ -1,0 +1,51 @@
+{
+  "webui": {
+    "enable": true,
+    "host": "0.0.0.0",
+    "port": 3080
+  },
+  "milky": {
+    "enable": false,
+    "reportSelfMessage": false,
+    "http": {
+      "host": "127.0.0.1",
+      "port": 3010,
+      "prefix": "",
+      "accessToken": ""
+    },
+    "webhook": {
+      "urls": [],
+      "accessToken": ""
+    }
+  },
+  "satori": {
+    "enable": false,
+    "host": "",
+    "port": 5600,
+    "token": ""
+  },
+  "ob11": {
+    "enable": true,
+    "connect": [
+      {
+        "type": "ws",
+        "enable": true,
+        "host": "0.0.0.0",
+        "port": 3001,
+        "heartInterval": 30000,
+        "token": "",
+        "reportSelfMessage": false,
+        "reportOfflineMessage": false,
+        "messageFormat": "array",
+        "debug": false
+      }
+    ]
+  },
+  "enableLocalFile2Url": false,
+  "log": true,
+  "autoDeleteFile": false,
+  "autoDeleteFileSecond": 60,
+  "musicSignUrl": "https://ss.xingzhige.com/music_card/card",
+  "msgCacheExpire": 120,
+  "ffmpeg": ""
+}

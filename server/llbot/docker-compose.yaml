@@ -1,0 +1,51 @@
+services:
+  pmhq:
+    image: linyuchen/pmhq:latest
+    container_name: llbot-pmhq
+    privileged: true
+    environment:
+      - ENABLE_HEADLESS=false
+      - AUTO_LOGIN_QQ=${BOT_QQ}
+      - PMHQ_AUTH_TOKEN=${PMHQ_AUTH_TOKEN}
+      - TZ=Asia/Shanghai
+    volumes:
+      - qq_volume:/root/.config/QQ
+      - ./llbot_config:/app/llbot/data:rw
+    networks:
+      - napcat_default
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:13000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  llbot:
+    image: linyuchen/llbot:latest
+    container_name: llbot
+    ports:
+      - "0.0.0.0:3080:3080"
+    environment:
+      - PMHQ_HOST=llbot-pmhq
+      - PMHQ_PORT=13000
+      - WEBUI_PORT=3080
+      - TZ=Asia/Shanghai
+    volumes:
+      - qq_volume:/root/.config/QQ
+      - ./llbot_config:/app/llbot/data:rw
+    depends_on:
+      - pmhq
+    networks:
+      napcat_default:
+        aliases:
+          - napcat
+    restart: unless-stopped
+
+volumes:
+  qq_volume:
+
+networks:
+  napcat_default:
+    external: true
+    name: napcat_default

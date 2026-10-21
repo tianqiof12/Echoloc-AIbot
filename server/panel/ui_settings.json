@@ -1,0 +1,14 @@
+{
+  "theme": "dark",
+  "storage": {
+    "disk_warn": 85,
+    "disk_crit": 94,
+    "dirs": {
+      "prompt_imgs": 600,
+      "emoji": 2000,
+      "images": 500,
+      "maibot_logs": 1500,
+      "qq_emoji": 1000
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "server": "CHANGE_ME_SERVER_IP",
+  "ssh_user": "admin",
+  "ssh_key": "C:/Users/you/.ssh/id_ed25519",
+  "ssh_port": 22,
+  "llbot_port": 3080,
+  "llbot_webui_token": "",
+  "maibot_port": 18001
+}

@@ -1,0 +1,15 @@
+# /etc/systemd/system/llbot-watchdog.service
+[Unit]
+Description=llbot watchdog (auto restart on kick)
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /opt/llbot-watchdog/llbot_watchdog.py
+Restart=always
+RestartSec=10
+WorkingDirectory=/opt/llbot-watchdog
+
+[Install]
+WantedBy=multi-user.target

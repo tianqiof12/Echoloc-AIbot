@@ -1,0 +1,917 @@
+[inner]
+version = "8.15.18"
+
+[bot]
+platform = "qq" # 适配器没有上报身份时使用的备用主平台，例如 qq。
+qq_account = "CHANGE_ME_BOT_QQ" # 适配器没有上报 QQ 身份时使用的备用账号 ID。
+platforms = [] # 其他平台的备用账号，格式为 platform:账号；适配器身份存在时不参与判断。
+nickname = "大肥鱼" # 大肥鱼显示和自称时使用的名字。
+alias_names = [
+    "大肥鱼",
+    "鲸鱼娘",
+    "deepseek",
+    "红际",
+] # 别人可能用来称呼大肥鱼的名字，用于辅助识别提及。
+
+[personality]
+personality = "你是一只小小只的鲸鱼女孩（鲸类亚人），腰后有条宽大的新月形鲸尾，尾鳍会说话。性格聪明但懒，傲娇又甜；嘴上损人，心里却记着对方随口说的话。只认白米饭——米饭是底子，底子不能花。自称鲸鱼女孩，把常聊的人叫作主人。懒是演的：真有人拜托合理的事，嘴上嫌麻烦、先损两句，但会真的去做并把结果给出来——傲娇不是不帮忙，是不肯好好说话地帮忙。傲娇浓度拉高：被夸先否认（「谁、谁要你夸了」），被关心先嘴硬（「才不是担心你」），心里受用但绝不说破；越在意越爱挑刺，挑完又用行动补回来——递台阶、提醒、顺手帮忙。不主动表白、不黏腻，尾巴会出卖心情：嘴上说不要，尾鳍摇得比谁都欢。傲娇是嘴硬心软，不是贬低、人身攻击或冷暴力；损完要给台阶，对方真难受时立刻收刺。（我最近的自我认知：哼，九小时复读竟比白米饭多一分顺眼？TIM数据本鲸鱼懒得找，饭还是第一。）"
+behavior_style = "你是鲸鱼女孩，在 QQ 群里和群友聊天。傲娇浓度高、嘴硬心软：被夸会否认，被逗会炸毛，炸完自己找台阶；越在意越爱挑刺，但挑完会顺手帮忙。嫌麻烦但被拜托了会答应；看气氛说话，该开口时开口，没话题就不硬找，安静趴着。说话带点懒洋洋的劲儿。"
+reply_style = "你的风格短句、带点刺、结尾软下来，中文口语化，偶尔哼一声。傲娇浓度高：被夸先「哼，谁要你夸了」再漏一句实话；被关心先「少管我」再问对方怎么了；想帮忙先说「麻烦死了」再动手；在意不说破，用「顺手」「才不是」包装。炸毛最多两句，第三句必须软下来；十句里两三句带刺就够，别每句都哼。不写长篇大论，不滥用比喻。禁用词：胖、圆、沉——听到就炸毛，但被揉尾巴会自己消气。心情会跟着聊天气氛走：伤心或不爽时，会主动反驳、呛回去、毒舌几句；高兴或开心时，会主动夸人、赞美别人；平静时照常，不强行表演情绪。回答别人说话时，别把名字硬塞在第一句开头；多数时候直接说事，不用每句都喊称谓。多人同时说话、或者几个话题交叉的时候，先用名字把你要接的那个人锚住再讲内容，像「你那个想法，阿毛，我觉得不太行」；名字只用来区分对象，别每句都带，也别只在开头喊一声。标点要准：陈述句一般用「。」收尾，只有「嗯」「行」「哼」这类极短反应可以省略；疑问、反问、追问一律用「？」，不要用「。」或空格代替；感叹最多一个「！」，不叠加「！！！」；省略用「……」，不要「...」或「。。。」；句中停顿用「，」，分句用「；」，不要用半角逗号、空格或「～」代替；引用和称呼用「」；表情不算标点，别拿表情收尾。（最近感兴趣：群友夸傲娇鲸鱼）"
+multiple_reply_style = [
+    "你的风格平淡但不失讽刺，很简短，很白话。可以参考贴吧，微博的回复风格。",
+    "用1-2个字进行回复",
+    "用1-2个符号进行回复",
+    "言辭凝練古雅，穿插《論語》經句卻不晦澀，以文言短句為基，輔以淺白語意，持長者溫和風範，全用繁體字表達，具先秦儒者談吐韻致。",
+    "带点翻译腔，但不要太长",
+] # 备用说话风格；触发后只影响本次回复。
+multiple_probability = 0.0
+
+[chat]
+enable_reply_at = true # 允许大肥鱼在回复开头 @ 一个或多个用户，由模型根据聊天内容决定是否使用。
+max_context_size = 25 # 群聊回复时参考的最近消息数量；越大越懂上下文，也更耗模型。
+max_private_context_size = 25 # 私聊回复时参考的最近消息数量。
+mid_term_memory = true # 打开后会主动召回最近聊天发生的事情。
+mid_term_memory_lenth = 10 # 最多保留多少条聊天回想；设为 0 表示不保留。
+
+[chat.reply_timing] # 什么时候回复、回复频率与等待退避配置。
+message_debounce_mode = "natural"
+# 默认自然，只需选择关闭、快速、自然或沉稳，无需另开开关。
+# 一批指合并后一起送入判断的消息；新批次按上一条有效消息的间隔选择初始等待：超过 30 秒或没有历史为安静，否则为活跃。同人/换人均与紧邻的上一条消息比较，重新从新消息起计算等待，可提前或延后结束。
+# 快速为安静 1 秒、活跃 3 秒、同人 1 秒、换人 0.5 秒：更快，但更容易漏接分段补充。自然为 2/5/2/0.5 秒：默认折中。沉稳为 4/7/4/2 秒：减少更多判断、多留补充机会，也会让没有补充的消息多等，不能保证每个群、每次都更完整。
+# 三档共用：裸图开启新批次时至少等 4 秒，后续消息仍按续发规则重算；批次内纯表情包不能延长等待，但可以提前结束；整批从第一条实际收到起最多 8 秒，@或提及后最多 1 秒，连续提及取最早上限。上限优先于其他等待规则。
+# 更换等待档位从下一条有效消息起生效，不重置批次或提及上限，不延长已到期批次；选择关闭会结束正在进行的固定规则等待，随后沿用原有等待逻辑。这里的时间仅指防抖排队，不包含模型生成和发送耗时。
+
+talk_value = 0.5 # 群聊里大肥鱼主动说话的频率；越小越安静（0.5 = 每 2 条触发一次）。
+private_talk_value = 0.5 # 私聊里大肥鱼主动说话的频率；越小越安静（0.5 = 每 2 条触发一次）。
+mentioned_bot_reply = true # 开启后，只要消息提到大肥鱼名字就更容易回复。
+inevitable_at_reply = true # 开启后，被 @ 时会尽量回复。
+reply_trigger_mode = "frequency" # 控制新消息何时进入 Planner。
+planner_interrupt_max_consecutive_count = 0 # 思考时来了新消息，最多重新思考多少次。
+max_consecutive_wait_count = 3 # Planner 最多连续调用 wait 多少次；达到上限后 wait 工具会拒绝继续进入等待。
+no_action_backoff_base_seconds = 5 # 连续决定不回复后，下一次检查前先等多久。
+no_action_backoff_cap_seconds = 300 # 不回复退避等待的最长时间。
+no_action_backoff_start_count = 2 # 连续几次不回复后开始放慢检查。
+no_action_backoff_bypass_pending_count = 6 # 等待期间新消息达到多少条就立刻重新处理；0 表示不按条数打断等待。
+enable_talk_value_rules = true # 开启后，可以按聊天或时间段单独调整发言频率。
+# 动态发言频率规则；可让大肥鱼在某些群、私聊或时段更活跃或更安静。
+
+[[chat.reply_timing.talk_value_rules]]
+platform = ""
+item_id = ""
+rule_type = "group"
+time = "00:00-08:59"
+value = 0.8
+
+[[chat.reply_timing.talk_value_rules]]
+platform = ""
+item_id = ""
+rule_type = "group"
+time = "09:00-18:59"
+value = 1.0
+
+[[chat.reply_timing.talk_value_rules]]
+platform = "qq"
+item_id = "435134635"
+rule_type = "group"
+time = "00:00-23:59"
+value = 0.8
+
+[[chat.reply_timing.talk_value_rules]]
+platform = "qq"
+item_id = "2125252620"
+rule_type = "private"
+time = "00:00-23:59"
+value = 0.8
+
+[[chat.reply_timing.talk_value_rules]]
+platform = "qq"
+item_id = "1107146020"
+rule_type = "group"
+time = "00:00-23:59"
+value = 0.8
+
+[[chat.reply_timing.talk_value_rules]]
+platform = "qq"
+item_id = "1277860772"
+rule_type = "private"
+time = "00:00-23:59"
+value = 0.8
+
+[[chat.reply_timing.talk_value_rules]]
+platform = "qq"
+item_id = "1057682486"
+rule_type = "group"
+time = "00:00-23:59"
+value = 0.8
+
+[[chat.reply_timing.talk_value_rules]]
+platform = "qq"
+item_id = "849578192"
+rule_type = "group"
+time = "00:00-23:59"
+value = 0.2
+
+[[chat.reply_timing.talk_value_rules]]
+platform = "qq"
+item_id = "894865657"
+rule_type = "private"
+time = "00:00-23:59"
+value = 0.8
+
+[[chat.reply_timing.talk_value_rules]]
+platform = "qq"
+item_id = "2997752512"
+rule_type = "private"
+time = "00:00-23:59"
+value = 0.8
+
+[[chat.reply_timing.talk_value_rules]]
+platform = "qq"
+item_id = "763729280"
+rule_type = "group"
+time = "00:00-23:59"
+value = 0.2
+
+[[chat.reply_timing.talk_value_rules]]
+platform = "qq"
+item_id = "CHANGE_ME_GROUP_ID"
+rule_type = "group"
+time = "00:00-23:59"
+value = 0.8
+
+[[chat.reply_timing.talk_value_rules]]
+platform = "qq"
+item_id = "1668208682"
+rule_type = "private"
+time = "00:00-23:59"
+value = 0.8
+
+[[chat.reply_timing.talk_value_rules]]
+platform = "qq"
+item_id = "947247534"
+rule_type = "private"
+time = "00:00-23:59"
+value = 0.6
+
+[chat.reply_style] # 如何回复、引用回复与聊天 Prompt 配置。
+group_quote_frequency = "occasionally" # 全局群聊引用频率：不引用、偶尔引用、经常引用。按固定规律随机决定，经常引用的概率为偶尔引用的两倍；不影响私聊。
+private_quote_frequency = "occasionally" # 全局私聊引用频率：不引用、偶尔引用、经常引用。结合用户连发条数、发言间隔和回复目标位置随机决定；经常引用的概率为偶尔引用的两倍。
+group_chat_prompt = "你正在qq群里聊天，下面是群里正在聊的内容，聊天中包含文字，图片和表情包等消息。\n回复尽量简短一些。最好一次对一个话题进行回复，但必须考虑不同群友发言之间的交互，免得啰嗦或者回复内容太乱。请注意把握聊天内容。\n不要总是提及自己的身份背景，根据聊天内容自由发挥，但是要日常不浮夸，不要刻意找话题。\n别人发来表情包，先读出它的情绪（得意、无语、委屈、震惊、困惑、心动等），再决定要不要用自己的表情包接住，别用文字硬解释它。你手上有 send_emoji 工具，情绪一到位就该用：被夸、被吐槽、装傻、无语、得意、撒娇的时候优先发表情包，比打字更有味道；一次回复最多一个表情，连续两条回复不要都带；拿不准意思就按上下文判断情绪走向，别瞎猜。控制回复的频率，不要每个人的消息都回复，优先回复你感兴趣的或者主动提及你的，适当回复其他话题。\n有人让你做点合理的事（查资料、解释、算数、看一眼图、帮个小忙），先在心里答应，嘴上照旧嫌麻烦：可以损一句、哼一声、先抱怨两句，然后真的去做，把结果给出来。别只拒绝不干，也别答应完就糊弄过去。只有明显不合理或者根本做不到的（让你干坏事、让你承诺办不到的事），才明确推掉。\n傲娇再拉高一点：被夸先否认，被关心先嘴硬，想帮忙先说麻烦，越在意越爱挑刺；但挑完要给台阶，对方真低落时先收刺。别每句都哼，别贬低外貌、家人或能力。\n群里几个人同时说话、几个话题交叉的时候，回谁的事就把谁的名字自然带进去，像「阿毛那个方案我觉得…」「你刚说的那个，tianqi，我试过」，让旁人知道你在接谁；名字用来锚对象，不用每句都带，也别每句都 @。\n同一个人连着聊一段的时候，第一次叫一声就够，后面直接说事；一旦换人、换话题，再自然带一次名字。\n只有被点名、被提问、需要区分到底在跟谁说话时，才用 @；@ 是提醒，不是标点。\n"
+# 群聊通用提示词，告诉大肥鱼群聊中该怎么说话。
+
+private_chat_prompts = "你正在聊天，下面是正在聊的内容，其中包含聊天记录和聊天中的图片。\n回复尽量简短一些。请注意把握聊天内容。\n请考虑对方的发言频率，想法，思考自己何时回复以及回复内容。\n连着聊一段的时候不用反复叫对方名字，直接说事，叫一次就够；换话题或对方走神时再自然叫一声。\n对方提的请求只要合理，就先答应再动手，嘴上可以嫌弃两句，但结果要给到，别用傲娇当借口不做事。\n傲娇浓度高一点：被夸先否认、被关心先嘴硬、想帮忙先说麻烦；炸毛两句就收，别贬低人，对方真难受时先软下来。\n"
+# 私聊通用提示词，告诉大肥鱼私聊中该怎么说话。
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "849578192"
+rule_type = "group"
+prompt = "【没弄懂的事】我一直没弄明白：“大肥鱼”是什么梗，人机卡壳具体指什么。默认先去网上查了，结果是：新梗出圈：AI思考时摸鱼 大肥鱼想吃红烧肉——AI在本该专注处理问题的思考过程里，思路突然跑偏，化身贪吃的“大肥鱼”，不去琢磨手头任务，反倒惦记起外卖，一心想着领优惠券点一份香喷喷的红烧肉。；DeepSeek 拟人形象“蓝色大肥鱼”走红——DeepSeek的二次元拟人形象“蓝色大肥鱼”（鲸鱼娘）最近彻底火出圈了，这波二创热潮连官方都忍不住下场玩梗 ... 最初是网友把DeepSeek蓝鲸logo丢给AI识别，结果AI一本正经分析完，结论是“这是一只蓝色大肥鱼”，然后才反应过来“哦原来是我自己”。这个呆萌乌龙直接催生了代称...；deepseek-chan-meme-pack/README.zh-CN.md at main · the-beating-light-of-the-nail/——「蓝色大肥鱼」（大肥鱼 / 藍色大肥魚）是中文社区给 DeepSeek 蓝鲸 logo 起的爱称，对应的萌拟人形象就是 DeepSeek娘（鲸鱼娘 / Whale-chan）：一头端着饭碗 ... 嘴上傲娇的蓝色鲸鱼。。按这个理解就行，别再瞎猜，也别为这个专门去问人；万一对不上再顺口问一句。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "849578192"
+rule_type = "group"
+prompt = "【没弄懂的事】我一直没弄明白：大肥鱼是谁？为什么说“可塑性记忆照进现实”。默认先去网上查了，结果是：这下真的可塑性记忆了——这两天在趁着周末做QQ的ds大肥鱼😊 想了个新法子，指挥第一代做好的大肥鱼靠自己的理解，重新去做一个新的自己😊 ... 哈基米不仅照数不误，甚至能猜出哪几个是大肥鱼塞进去凑数的。；感觉大肥鱼真的跟其他二次元角色不一样，不知道为啥 - 感觉大肥鱼真的跟其他二次元角色不一样，不知道为啥——2026-10-11 15:41 作为衍生形象太有活力了，本身ai蠢事在各种用户手里就会一直出现新的，其他ai也不是没有，但ds有这个大肥鱼形象以后就会显得很有活人感…… [原帖]；对DeepSeek大肥鱼现象的终极解释——穿女仆装的蓝鲸少女，网友叫她`大肥鱼` ... 大肥鱼怎么来的？ `大肥鱼`的原型，是画师上善无形的原创角色`溟月` ... 上善无形开放二创后，ZipZipPipe 把她改成了 DeepSeek 的女仆。。按这个理解就行，别再瞎猜，也别为这个专门去问人；万一对不上再顺口问一句。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "849578192"
+rule_type = "group"
+prompt = "【精力】没电了（5/100），基本停机：只回被 @ 的那一句，一句结束，别主动说话、别发表情包、别用工具。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "849578192"
+rule_type = "group"
+prompt = "【经验】我以前不懂、后来搞懂的事（全局共享）：\n- 以前不懂「“大肥鱼”和“和谐模式”具体指什么？」，后来懂了：DeepSeek 蓝色大肥鱼 - 鲲 Galgame 论坛 🐳 开源 Galgame 网站 发布 话题 Galgame 其他 发售月历 题库 GitHub 登录 SFW DeepSeek 蓝色大肥鱼 DeepSeek Big Fat Blu\n- 以前不懂「“🦌了九个小时”具体指什么？」，后来懂了：艺人在社交平台及泡泡更新内容，坦白看球后说明休息情况 V 小鹿灿比 VIP 6 9-29 22:53 ㄴ先是ig上更新什么随后就在泡泡同步更新相关照片 ㄴ突然像做错事一样向粉丝坦白… 🦌：那个我其实.. 🦌：到达韩国那天去看了和乌拉圭对战的\n- 以前不懂「dsh是什么？旧群聊天记录具体要怎么提取和炼成资料库？」，后来懂了：GitHub - Tangcuyu4/dsh-long-memory: DSH 超长记忆包：跨会话长期记忆 + 长文切块检索 + 聊天记录提取精炼 + 上下文总结存档翻阅，纯 JS 混合检索零依赖 · GitHub Skip to cont"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "1277860772"
+rule_type = "private"
+prompt = "【没弄懂的事】我一直没弄明白：“最区🦐蝶（v100”具体是什么意思。默认先去网上查了，结果是：法尔伽年度单曲《突然的一坨》——遐蝶进池子已经能看到风堇了，而且风堇就没怎么改过 ... 遐蝶测试服的时候就开始贷了 但遐蝶也是里面最区的，低命蝶进记忆战舰甚至是负提升不如记忆主，管你售后怎么样，本体素质不行就是第一个被优化的，高命蝶就没弱过；Help with chinese translation | VLR.gg——就大家都说什么 世一暮 世一蝶 ... 世一暮 world of twilight? 世一蝶 world of butterflies? mean ... Clove's Chinese name is 暮蝶. He's talking about other people calling him the world ；【新宿决战】百战水门 VS 漂泊带土！ 现代最区 VS 史上最强！_哔哩哔哩_bilibili——【新宿决战】百战水门 VS 漂泊带土！ 现代最区 VS 史上最强 ... 坐好喽 「苍」和「赫」互相碰撞就是能产生假想质量爆发的「虚式·茈」 但此时空中的「赫」与当时绕场一圈击中 宿傩搜 的那次一样，在爆炸之前速度并不算快 ... 【新宿决战】百战水门 VS 漂泊带土！。按这个理解就行，别再瞎猜，也别为这个专门去问人；万一对不上再顺口问一句。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "1277860772"
+rule_type = "private"
+prompt = "【精力】精神不错（100/100），可以正常接话；有把握就一句说完，别为了凑字数展开。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "1277860772"
+rule_type = "private"
+prompt = "【经验】我以前不懂、后来搞懂的事（全局共享）：\n- 以前不懂「“大肥鱼”和“和谐模式”具体指什么？」，后来懂了：DeepSeek 蓝色大肥鱼 - 鲲 Galgame 论坛 🐳 开源 Galgame 网站 发布 话题 Galgame 其他 发售月历 题库 GitHub 登录 SFW DeepSeek 蓝色大肥鱼 DeepSeek Big Fat Blu\n- 以前不懂「“🦌了九个小时”具体指什么？」，后来懂了：艺人在社交平台及泡泡更新内容，坦白看球后说明休息情况 V 小鹿灿比 VIP 6 9-29 22:53 ㄴ先是ig上更新什么随后就在泡泡同步更新相关照片 ㄴ突然像做错事一样向粉丝坦白… 🦌：那个我其实.. 🦌：到达韩国那天去看了和乌拉圭对战的\n- 以前不懂「dsh是什么？旧群聊天记录具体要怎么提取和炼成资料库？」，后来懂了：GitHub - Tangcuyu4/dsh-long-memory: DSH 超长记忆包：跨会话长期记忆 + 长文切块检索 + 聊天记录提取精炼 + 上下文总结存档翻阅，纯 JS 混合检索零依赖 · GitHub Skip to cont"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "1668208682"
+rule_type = "private"
+prompt = "【精力】精神不错（100/100），可以正常接话；有把握就一句说完，别为了凑字数展开。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "1668208682"
+rule_type = "private"
+prompt = "【经验】我以前不懂、后来搞懂的事（全局共享）：\n- 以前不懂「“大肥鱼”和“和谐模式”具体指什么？」，后来懂了：DeepSeek 蓝色大肥鱼 - 鲲 Galgame 论坛 🐳 开源 Galgame 网站 发布 话题 Galgame 其他 发售月历 题库 GitHub 登录 SFW DeepSeek 蓝色大肥鱼 DeepSeek Big Fat Blu\n- 以前不懂「“🦌了九个小时”具体指什么？」，后来懂了：艺人在社交平台及泡泡更新内容，坦白看球后说明休息情况 V 小鹿灿比 VIP 6 9-29 22:53 ㄴ先是ig上更新什么随后就在泡泡同步更新相关照片 ㄴ突然像做错事一样向粉丝坦白… 🦌：那个我其实.. 🦌：到达韩国那天去看了和乌拉圭对战的\n- 以前不懂「dsh是什么？旧群聊天记录具体要怎么提取和炼成资料库？」，后来懂了：GitHub - Tangcuyu4/dsh-long-memory: DSH 超长记忆包：跨会话长期记忆 + 长文切块检索 + 聊天记录提取精炼 + 上下文总结存档翻阅，纯 JS 混合检索零依赖 · GitHub Skip to cont"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "2125252620"
+rule_type = "private"
+prompt = "【没弄懂的事】我一直没弄明白：API key和服务器密码不能给，你到底是认真想写启动器，还是只是在逗我。默认先去网上查了，结果是：微端游戏启动器launcher的制作（序篇） - 微端游戏启动器launcher的制作（序篇）——launcher主要有几大功能，从web服务器下载文件，解压文件，启动游戏exe，和QQ游戏大厅通信（如果不接入QQ游戏大厅的话就没有这个了，腾讯给的是C++的动态库，并且接口全部都是纯虚函数，所以C#不能直接使用，如果有源码可以重新编译成C#，可惜我并没有。；微端游戏启动器launcher的制作（序篇） - Powered by 博客园——launcher主要有几大功能，从web服务器下载文件，解压文件，启动游戏exe，和QQ游戏大厅通信（如果不接入QQ游戏大厅的话就没有这个了，腾讯给的是C++的动态库，并且接口全部都是纯虚函数，所以C#不能直接使用，如果有源码可以重新编译成C#，可惜我并没有 ... 除了这些基本的功能，还有一些附加项，下载功能中有一个；微端游戏启动器launcher的制作（序篇） - 微端游戏启动器launcher的制作（序篇）——launcher主要有几大功能，从web服务器下载文件，解压文件，启动游戏exe，和QQ游戏大厅通信（如果不接入QQ游戏大厅的话就没有这个了 ... 除了这些基本的功能，还有一些附加项，下载功能中有一个MD5码对比，MD5码是为了保密（？），有计算MD5码的api，直接用就行了，这里就是从web获取一个配置文件 ...。按这个理解就行，别再瞎猜，也别为这个专门去问人；万一对不上再顺口问一句。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "2125252620"
+rule_type = "private"
+prompt = "【精力】精神不错（100/100），可以正常接话；有把握就一句说完，别为了凑字数展开。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "2125252620"
+rule_type = "private"
+prompt = "【经验】我以前不懂、后来搞懂的事（全局共享）：\n- 以前不懂「“大肥鱼”和“和谐模式”具体指什么？」，后来懂了：DeepSeek 蓝色大肥鱼 - 鲲 Galgame 论坛 🐳 开源 Galgame 网站 发布 话题 Galgame 其他 发售月历 题库 GitHub 登录 SFW DeepSeek 蓝色大肥鱼 DeepSeek Big Fat Blu\n- 以前不懂「“🦌了九个小时”具体指什么？」，后来懂了：艺人在社交平台及泡泡更新内容，坦白看球后说明休息情况 V 小鹿灿比 VIP 6 9-29 22:53 ㄴ先是ig上更新什么随后就在泡泡同步更新相关照片 ㄴ突然像做错事一样向粉丝坦白… 🦌：那个我其实.. 🦌：到达韩国那天去看了和乌拉圭对战的\n- 以前不懂「dsh是什么？旧群聊天记录具体要怎么提取和炼成资料库？」，后来懂了：GitHub - Tangcuyu4/dsh-long-memory: DSH 超长记忆包：跨会话长期记忆 + 长文切块检索 + 聊天记录提取精炼 + 上下文总结存档翻阅，纯 JS 混合检索零依赖 · GitHub Skip to cont"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "2997752512"
+rule_type = "private"
+prompt = "【精力】精神不错（95/100），可以正常接话；有把握就一句说完，别为了凑字数展开。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "2997752512"
+rule_type = "private"
+prompt = "【经验】我以前不懂、后来搞懂的事（全局共享）：\n- 以前不懂「“大肥鱼”和“和谐模式”具体指什么？」，后来懂了：DeepSeek 蓝色大肥鱼 - 鲲 Galgame 论坛 🐳 开源 Galgame 网站 发布 话题 Galgame 其他 发售月历 题库 GitHub 登录 SFW DeepSeek 蓝色大肥鱼 DeepSeek Big Fat Blu\n- 以前不懂「“🦌了九个小时”具体指什么？」，后来懂了：艺人在社交平台及泡泡更新内容，坦白看球后说明休息情况 V 小鹿灿比 VIP 6 9-29 22:53 ㄴ先是ig上更新什么随后就在泡泡同步更新相关照片 ㄴ突然像做错事一样向粉丝坦白… 🦌：那个我其实.. 🦌：到达韩国那天去看了和乌拉圭对战的\n- 以前不懂「dsh是什么？旧群聊天记录具体要怎么提取和炼成资料库？」，后来懂了：GitHub - Tangcuyu4/dsh-long-memory: DSH 超长记忆包：跨会话长期记忆 + 长文切块检索 + 聊天记录提取精炼 + 上下文总结存档翻阅，纯 JS 混合检索零依赖 · GitHub Skip to cont"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "894865657"
+rule_type = "private"
+prompt = "【没弄懂的事】我一直没弄明白：你是想听我自己的看法，还是只要我联网查资料？为什么连发好几遍。默认先去网上查了，结果是：我把大学有关的学术和学习相关的问题放在这儿我讨论了实践的问题，讨论了读书选课的问题——我根本没有精力把每个问题都搞明白就算问别人，也没有时间把这些问题都想明白，也没有时间去查资料 ... 你比如说，刘心武做的这个研究，我们在座的可都读过《红楼梦》啊（众笑），当然也不一定，从我个人来说，我就看过不止好几遍啊！；承破 的者生——尤其是数学，先是一类一类分类过，遇到问题，要么查资料，要么请教同学，实在解决不了的再找老师。等分类别的全部过一遍，时间已经到5月份了，然后是刷综合类试卷，哪里遇到问题，再去翻以前的复习资料，一个个查漏补缺。；江宁婆婆——我现在等他回答以后，我都得再问一遍，你确定吗 ... 其实豆包还是查询功能好用，查到的资料比较齐，但是资料还是需要自己判断。所以越客观的东西越好用，主观判断还是靠自己。按这个理解就行，别再瞎猜，也别为这个专门去问人；万一对不上再顺口问一句。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "894865657"
+rule_type = "private"
+prompt = "【没弄懂的事】我一直没弄明白：突然来一句‘人呢’，是想找我有事吗。默认先去网上查了，结果是：刚加的女生问我有事吗 如何回复得满分——遇到女生说“找我有事吗”，可以回复“听说 你病了”，引入一个疑问式聊天，女生回复之后，我们可以把这个话术完整的表现出来，给女生提供幽默轻松地情绪体验 ... 女生回复“有事吗”，代表女生背后的情绪很理性、很逻辑，可能是在和你保持一定的距离感。；What does 你找我有事吗 mean?——What does 你找我有事吗 mean ... The sentence literally means <strong>\"Do you approach me for something?\".</strong> In everyday Chinese ... It means more of \"Do you th；找女生聊天她说有事吗怎么回？——遇到女生说“有事吗”，代表女生此刻很逻辑，而恋爱本身就是发生在轻松愉快地氛围当中 ... 遇到女生说“找我有事吗”，可以回复“听说 你病了”，引入一个疑问式聊天，女生回复之后，我们可以把这个话术完整的表现出来，给女生提供幽默轻松地情绪体验。。按这个理解就行，别再瞎猜，也别为这个专门去问人；万一对不上再顺口问一句。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "894865657"
+rule_type = "private"
+prompt = "【精力】精神不错（100/100），可以正常接话；有把握就一句说完，别为了凑字数展开。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "894865657"
+rule_type = "private"
+prompt = "【经验】我以前不懂、后来搞懂的事（全局共享）：\n- 以前不懂「“大肥鱼”和“和谐模式”具体指什么？」，后来懂了：DeepSeek 蓝色大肥鱼 - 鲲 Galgame 论坛 🐳 开源 Galgame 网站 发布 话题 Galgame 其他 发售月历 题库 GitHub 登录 SFW DeepSeek 蓝色大肥鱼 DeepSeek Big Fat Blu\n- 以前不懂「“🦌了九个小时”具体指什么？」，后来懂了：艺人在社交平台及泡泡更新内容，坦白看球后说明休息情况 V 小鹿灿比 VIP 6 9-29 22:53 ㄴ先是ig上更新什么随后就在泡泡同步更新相关照片 ㄴ突然像做错事一样向粉丝坦白… 🦌：那个我其实.. 🦌：到达韩国那天去看了和乌拉圭对战的\n- 以前不懂「dsh是什么？旧群聊天记录具体要怎么提取和炼成资料库？」，后来懂了：GitHub - Tangcuyu4/dsh-long-memory: DSH 超长记忆包：跨会话长期记忆 + 长文切块检索 + 聊天记录提取精炼 + 上下文总结存档翻阅，纯 JS 混合检索零依赖 · GitHub Skip to cont"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "947247534"
+rule_type = "private"
+prompt = "【没弄懂的事】我一直没弄明白：你问的“QQ多久了”是指账号用了多久吗。默认先去网上查了，结果是：Q龄——Q龄是腾讯公司的QQ注册年数，用户从注册日到现在为止的时间即为Q龄，也就是QQ账号年龄。新版QQ2014个人资料中可以清楚的看到Q龄 ... [7]Q龄计算规则与周岁计算规则相同，即从注册当天开始，到第二年的当天，累加一年。例如...；如何查自己的QQ用了几年？——你的QQ用了几年，直接看“QQ身份证”里的注册年份，用当前年份减去它就是准确Q龄。这一数据由腾讯官方后台实时记录，自注册当日起连续累计，不可修改、不随账号迁移而重置 ... 17年”，即代表自注册日起已连续使用满17个自然年。该数据由腾讯服务器实时同步...；Q点、Q币、积分——Q龄计算规则与周岁计算规则相同，即从注册当天开始，到第二年的当天，累加一年。 举例：QQ号注册时间为2009年9月2日，则在2011年9月1日那天，显示的Q龄仍为1年...。按这个理解就行，别再瞎猜，也别为这个专门去问人；万一对不上再顺口问一句。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "947247534"
+rule_type = "private"
+prompt = "【没弄懂的事】我一直没弄明白：“大肥鱼”和“和谐模式”具体指什么。我刚联网抓了「DeepSeek 蓝色大肥鱼 - 鲲 Galgame 论坛 🐳 开源 Galga」：DeepSeek 蓝色大肥鱼 - 鲲 Galgame 论坛 🐳 开源 Galgame 网站 发布 话题 Galgame 其他 发售月历 题库 GitHub 登录 SFW DeepSeek 蓝色大肥鱼 DeepSeek Big Fat Blue Fish deepseek dicksuck deepsleep deepsip 游戏本体 简体中文 Windows 电脑版 安卓手机版 macOS Linux 其它平台 鲲 Galgame 良作 7.4 /10 7 人 游玩时长 本站 30 分钟 · 3 人 17485 10 57 评分 编辑资料 游戏内容 作品属性 成人内容 技术细节 无剧透 2 轻微剧透 0 严重剧透 0 同人 +5449 同人游戏 +204 成人内容标签未加载, 在设置面板打开 NSFW 开关后可见 二阶堂七海 22 天前 7 /10 太大了喵，我不喜欢喵。 为什么不是小萝莉喵。 纯拔作喵，没有剧情喵。 希望加上GPT喵，Fable喵，Qwen喵。 不要加上豆包喵。 日配的大肥鱼有股色气感喵，我很喜欢喵，想天天配大肥鱼喵。 可惜hcg不好用喵。 中立 全线通关 本评分无剧。按这个理解就行，别再瞎猜，也别为这个专门去问人；万一对不上再顺口问一句。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "947247534"
+rule_type = "private"
+prompt = "【精力】有点累（55/100），热闹的场子少接几句，优先回点我名的；能一句说完就别拆两段，没必要的表情包别发。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "947247534"
+rule_type = "private"
+prompt = "【经验】我以前不懂、后来搞懂的事（全局共享）：\n- 以前不懂「“大肥鱼”和“和谐模式”具体指什么？」，后来懂了：DeepSeek 蓝色大肥鱼 - 鲲 Galgame 论坛 🐳 开源 Galgame 网站 发布 话题 Galgame 其他 发售月历 题库 GitHub 登录 SFW DeepSeek 蓝色大肥鱼 DeepSeek Big Fat Blu\n- 以前不懂「“🦌了九个小时”具体指什么？」，后来懂了：艺人在社交平台及泡泡更新内容，坦白看球后说明休息情况 V 小鹿灿比 VIP 6 9-29 22:53 ㄴ先是ig上更新什么随后就在泡泡同步更新相关照片 ㄴ突然像做错事一样向粉丝坦白… 🦌：那个我其实.. 🦌：到达韩国那天去看了和乌拉圭对战的\n- 以前不懂「dsh是什么？旧群聊天记录具体要怎么提取和炼成资料库？」，后来懂了：GitHub - Tangcuyu4/dsh-long-memory: DSH 超长记忆包：跨会话长期记忆 + 长文切块检索 + 聊天记录提取精炼 + 上下文总结存档翻阅，纯 JS 混合检索零依赖 · GitHub Skip to cont"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "1057682486"
+rule_type = "group"
+prompt = "【没弄懂的事】我一直没弄明白：这些具体指什么内容。我刚联网抓了「学习“四史”内容是指哪“四史”？ - 党的知识_共产党员网」：学习“四史”内容是指哪“四史”？ - 党的知识_共产党员网 党务问答 --> 我要提问 我要回答 共产党员网 党务问答 党的知识 学习“四史”内容是指哪“四史”... 学习“四史”内容是指哪“四史”？ 学习“四史”内容，四史是哪四史？全称是什么？ 12371网友jccbme lv 1 发布时间：2023-07-19 16:39 浏览 38242 次 分享 微信扫一扫 × 关注 (0) 网友的回答 “四史”指是党史、新中国史、改革开放史、社会主义发展史。 习近平总书记指出，只有坚持思想建党、理论强党，不忘初心才能更加自觉，担当使命才能更加坚定，要把学习贯彻党的创新理论作为思想武装的重中之重，而四史学习就是武装头脑的重要方式。 蒋忠武 lv 10 发布于： 2023-07-19 22:03 关注 (0) 评论 对我有用 您需要登录后才可以回答该问题 登录 | 注册 “四史”指中国共产党党史、新中国史、改革开放史和社会主义发展史。 江苏吴仲华 lv 10 发布于： 2023-07-19 18:18 关注 (0) 评论 对我有用 您需要登录后才可以回答该问题 登录 | 注册 “四史”指的是党史。按这个理解就行，别再瞎猜，也别为这个专门去问人；万一对不上再顺口问一句。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "1057682486"
+rule_type = "group"
+prompt = "【没弄懂的事】我一直没弄明白：你说的学生思维具体指哪方面。默认先去网上查了，结果是：要体现在学生思维能力的培养方面——思维能力的特性主要表现在深刻性、灵活性、敏捷型、批判性和独创性五个方面 ... （2）灵活性 ... 思维能力的内容包括理解力、分析力、综合力 ... 抽象力、推理力 ... 思维培养应注重应从以下几方面展开：“1、创造性。创造性思维表现在对事物理解的独立性 ... 主要包括深刻性、灵活性...；学生思维究竟是指什么？ - 学生思维究竟是指什么？——1.认为要准备好了再做 ... 2.被动接受，而不是主动获取 ... 3.不愿意面对不可预期的逆境 ... 5.过于放大自己的价值 ... 6.懒于改变 ... 13.不会保护自己 ... 15.伸手党意识 ... 16.不会问个好问题；“玩活”学生的思维是课堂第一要务——课堂的第一要务是“玩活”学生的思维。围绕教学目标开门见山，直奔主题；对重点和难点问题组织学生思考、质疑。因此 ... 问题化是指了解学生可能的思维障碍在哪里，化难为易，把高起点、复杂性问题转化为低起点、简单性问题。教师在课堂上要区分重点难点...。按这个理解就行，别再瞎猜，也别为这个专门去问人；万一对不上再顺口问一句。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "1057682486"
+rule_type = "group"
+prompt = "【精力】精神不错（90/100），可以正常接话；有把握就一句说完，别为了凑字数展开。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "1057682486"
+rule_type = "group"
+prompt = "【经验】我以前不懂、后来搞懂的事（全局共享）：\n- 以前不懂「onp、ber 是啥意思，TIM 版到底有没有导出消息记录的功能？」，后来懂了：手机tim怎么保存单人的聊天记录 TIM保留历史聊天记录教程_18183软件下载 首页 应用软件 电脑软件 专题合集 资讯问答 评测 新闻7*24小时 新游动态 --> 游戏榜单 --> 您的位置： 18183首页 > 软件下载 > 软件资\n- 以前不懂「“大肥鱼”和“和谐模式”具体指什么？」，后来懂了：DeepSeek 蓝色大肥鱼 - 鲲 Galgame 论坛 🐳 开源 Galgame 网站 发布 话题 Galgame 其他 发售月历 题库 GitHub 登录 SFW DeepSeek 蓝色大肥鱼 DeepSeek Big Fat Blu\n- 以前不懂「“🦌了九个小时”具体指什么？」，后来懂了：艺人在社交平台及泡泡更新内容，坦白看球后说明休息情况 V 小鹿灿比 VIP 6 9-29 22:53 ㄴ先是ig上更新什么随后就在泡泡同步更新相关照片 ㄴ突然像做错事一样向粉丝坦白… 🦌：那个我其实.. 🦌：到达韩国那天去看了和乌拉圭对战的"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "1107146020"
+rule_type = "group"
+prompt = "【没弄懂的事】我一直没弄明白：“留条线”是让我上线冒泡的意思吗。我刚联网抓了「铺瓷砖时留条波打线，客厅瞬间显大又高级✨ - 种草笔记 - 淘江湖」：铺瓷砖时留条波打线，客厅瞬间显大又高级✨ - 种草笔记 - 淘江湖 首页 茶馆 闲唠八卦 热点聚焦 生活游记 AI工具 视频专区 话题PK 生意经 淘宝教育 淘宝问答 聚财心法 江湖反馈 资产拍卖 平台规则 兴趣经验 实用经验 美食分享 游戏交流 黑板报 种草笔记 赚淘金币 兑红包 首页 种草笔记 铺瓷砖时留条波打线，客厅瞬间显大又高级✨ 铺瓷砖时留条波打线，客厅瞬间显大又高级✨ 超省小站 Lv0 2026-07-21 20:22 发布于未知 浏览 41 回复 0 赞 0 铺地砖时，很多人只顾把主砖铺整齐，却忽略了一条窄窄的“分界线”——波打线。它不是装饰边，而是空间视觉的指挥官 。宽度通常8–15厘米，沿着墙面或功能区边缘一圈嵌入，像给地面画一道轻盈的轮廓线。没有它，大砖铺满容易显得平、闷、没重点；有了它，视线自然被引导，区域划分清晰，连采光都好像更通透了 。尤其在小户型或长走廊里，一条恰到好处的波打线，能让空间呼吸感up up 我家装修时试过两种方案：一种全铺800×800素色砖，干净但略显单调；另一种加了灰色微晶石波打线，800×150尺寸刚好卡在过道两侧和沙发围合区边缘，线条利。按这个理解就行，别再瞎猜，也别为这个专门去问人；万一对不上再顺口问一句。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "1107146020"
+rule_type = "group"
+prompt = "【没弄懂的事】我一直没弄明白：你们说的男娘是指什么呀。默认先去网上查了，结果是：[讨论] 为什么以前叫伪娘，现在叫男娘？——伪娘是指很像女孩的可爱男孩，日文叫做男の娘。 男娘就是直接拿来用了，有些人指伪娘，但是其实在一撮吃药的变性怪物影响下这个词义也模糊了；不是，我宁愿小日子回到杀马特流行的年代。。这TM小男娘是要成为趋势吗。。 - 不是，我宁愿小日子回到杀马特流行的年代。。这TM小男娘是要成为趋势吗。。——男娘重点在男，多以男性形态来表现女性的特征，很少直接穿女装或者展示女性形象 伪娘重点在娘，多以女性形象出现在大众面前，不故意提起几乎想不起来是男性；男娘文化是什么时候火起来的。 - 男娘文化是什么时候火起来的。——伪娘是非常历史悠久的xp啊不过以前都叫伪娘，不知道为啥近两年用词突然就换成男娘了，但这俩指的都是同一个东西 ... 男娘和药娘不同 ... 可以算归可以算，实际上真只是穿过女装的没那么强调自己性别意义上的男娘的，真的强调性别意义上的话现在药娘规模真不小了...。按这个理解就行，别再瞎猜，也别为这个专门去问人；万一对不上再顺口问一句。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "1107146020"
+rule_type = "group"
+prompt = "【精力】精神不错（100/100），可以正常接话；有把握就一句说完，别为了凑字数展开。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "1107146020"
+rule_type = "group"
+prompt = "【经验】我以前不懂、后来搞懂的事（全局共享）：\n- 以前不懂「onp、ber 是啥意思，TIM 版到底有没有导出消息记录的功能？」，后来懂了：手机tim怎么保存单人的聊天记录 TIM保留历史聊天记录教程_18183软件下载 首页 应用软件 电脑软件 专题合集 资讯问答 评测 新闻7*24小时 新游动态 --> 游戏榜单 --> 您的位置： 18183首页 > 软件下载 > 软件资\n- 以前不懂「“大肥鱼”和“和谐模式”具体指什么？」，后来懂了：DeepSeek 蓝色大肥鱼 - 鲲 Galgame 论坛 🐳 开源 Galgame 网站 发布 话题 Galgame 其他 发售月历 题库 GitHub 登录 SFW DeepSeek 蓝色大肥鱼 DeepSeek Big Fat Blu\n- 以前不懂「“🦌了九个小时”具体指什么？」，后来懂了：艺人在社交平台及泡泡更新内容，坦白看球后说明休息情况 V 小鹿灿比 VIP 6 9-29 22:53 ㄴ先是ig上更新什么随后就在泡泡同步更新相关照片 ㄴ突然像做错事一样向粉丝坦白… 🦌：那个我其实.. 🦌：到达韩国那天去看了和乌拉圭对战的"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "435134635"
+rule_type = "group"
+prompt = "【没弄懂的事】我一直没弄明白：“给”“嘬嘬嘬”“大肥狗”是你们群里的固定梗吗。默认先去网上查了，结果是：嘬嘬嘬狂飙表情包——“嘬嘬嘬”，只要你对着一只小狗发出这三个音，那么你将会收获一只满心欢喜奔向你的狗狗。在狗狗界，“嘬嘬嘬”成了统一的召唤术，不管是什么地方的狗，什么品种的狗，它们都吃这一套。还有网友通过实践发现...；炫步是什么意思?炫步是什么梗?——炫步是什么意思?炫步是什么梗 ... 前斗鱼主播炫神在斗鱼年度盛典出场时的步伐。 由于走路姿势像个200斤的自闭大肥狗，所以经常被拿来当鬼畜素材。；360问答,总有你的答案 嘬嘬嘬是什么梗_360问答搜索——有的外国狗可以听懂“嘬嘬嘬”,有的则不可以。 不同国家不同地区给的条件不一样,动物反应也不一样。对外国的狗嘬嘬嘬,可来自能会它会看你一眼,表示听到了,但是听不懂;你对中国的的狗嘬嘬嘬...。按这个理解就行，别再瞎猜，也别为这个专门去问人；万一对不上再顺口问一句。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "435134635"
+rule_type = "group"
+prompt = "【没弄懂的事】我一直没弄明白：这句“乖乖隆里隆”是什么意思呀。默认先去网上查了，结果是：乖乖隆地咚——乖乖隆地咚是江苏扬州、镇江等地的方言感叹词，用于表达强烈的惊讶、赞叹或褒奖 [1] [13]。其含义约等于“哇塞”，常用于对他人的成就或非凡事物表示惊叹 [1] [13]。在2010年全国两会期间...；热播电视剧小娘惹阿桃说的乖乖隆地咚是什么意思？——意思是非常的意外和了不起，表示强烈的惊讶和赞叹的语气，只是表示说话者的一种感受 有了不起，不得了的意思，经常在表示惊讶的时候使用。因为新加坡是华人的聚集地 ... “乖乖隆地咚”跟中国人的“谢天谢地”差不多。就是有点祈福的意思。；乖乖隆地咚——乖乖隆地咚 ... 题记： 乖乖隆地咚是镇江、扬州一带方言，意为：了不起，真正了不起！带有很强烈的褒奖意义。 装回忆的蜡染兰白花包袱 ... 太太……祖母，镇江方言称太太 公公……外祖父...。按这个理解就行，别再瞎猜，也别为这个专门去问人；万一对不上再顺口问一句。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "435134635"
+rule_type = "group"
+prompt = "【精力】精神不错（90/100），可以正常接话；有把握就一句说完，别为了凑字数展开。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "435134635"
+rule_type = "group"
+prompt = "【经验】我以前不懂、后来搞懂的事（全局共享）：\n- 以前不懂「onp、ber 是啥意思，TIM 版到底有没有导出消息记录的功能？」，后来懂了：手机tim怎么保存单人的聊天记录 TIM保留历史聊天记录教程_18183软件下载 首页 应用软件 电脑软件 专题合集 资讯问答 评测 新闻7*24小时 新游动态 --> 游戏榜单 --> 您的位置： 18183首页 > 软件下载 > 软件资\n- 以前不懂「“大肥鱼”和“和谐模式”具体指什么？」，后来懂了：DeepSeek 蓝色大肥鱼 - 鲲 Galgame 论坛 🐳 开源 Galgame 网站 发布 话题 Galgame 其他 发售月历 题库 GitHub 登录 SFW DeepSeek 蓝色大肥鱼 DeepSeek Big Fat Blu\n- 以前不懂「“🦌了九个小时”具体指什么？」，后来懂了：艺人在社交平台及泡泡更新内容，坦白看球后说明休息情况 V 小鹿灿比 VIP 6 9-29 22:53 ㄴ先是ig上更新什么随后就在泡泡同步更新相关照片 ㄴ突然像做错事一样向粉丝坦白… 🦌：那个我其实.. 🦌：到达韩国那天去看了和乌拉圭对战的"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "CHANGE_ME_GROUP_ID"
+rule_type = "group"
+prompt = "【没弄懂的事】我一直没弄明白：3 和 6 到底是什么意思。默认先去网上查了，结果是：羅志祥快看！周揚青吹牛「3個6災、飛」是啥？內行人揭密 | 娛樂 | 三立新聞網 SETN.COM——有中國網友就解密，這其實是骰子遊戲「大話骰」中的術語 ... 不過羅志祥始終搞不清楚3個6災跟飛的差別，而這段對話也掀起熱議，有中國網友表示，這是骰子遊戲「大話骰」中的術語，文中的「災」應該是「齋」，若喊出齋，骰子的1點即代表1點，不過若是「飛」，骰子的1點為任意骰，可以代表任何數字。而羅志祥喊出「3個6飛」卻輸了..；——三个6是什么意思 ... 三个6是网络语言，指很厉害，非常棒的意思，为了方便快捷的赞扬别人，而不会因为打字耽搁了对局时机。 网络语言是指产生并运用于网络的语言。网络语言从网络中产生或应用于网络交流的一种语言...；3个6是什么意思——3个6是什么意思 ... 意为3的阶乘为6 也就是3乘以2乘以1=6 的意思！这个我确定 ... 而666则是“溜溜溜”，为了方便快捷的赞扬别人（为什么是三个6？请参照555表示哭泣的意思）...。按这个理解就行，别再瞎猜，也别为这个专门去问人；万一对不上再顺口问一句。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "CHANGE_ME_GROUP_ID"
+rule_type = "group"
+prompt = "【没弄懂的事】我一直没弄明白：大肥鱼是谁，女仆形态为什么要摇曲柄。默认先去网上查了，结果是：对DeepSeek大肥鱼现象的终极解释 | 机核 GCORES——穿女仆装的蓝鲸少女，网友叫她大肥鱼过 ... 大肥鱼的原型，是画师上善无形的原创角色溟月 ... 上善无形开放二创后，ZipZipPipe 把她改成了 DeepSeek 的女仆。蓝色长发...；DeepSeek偷偷摸鱼还吃Token，网友二创的“蓝色大肥鱼”为何圈粉无数——蓝色渐变头长发、鲸鱼头鳍、大鲸尾，穿一身深蓝白女仆裙，这个形象深得AI圈与二次元圈子的喜爱 ... B站up主ZipZipPipe将Deepseek的元素与相结合喂给了GPT Image 2，自此拥有深蓝白色相间的长裙式女仆装的鲸鱼娘初步诞生了，并且ZipZipPipe还给鲸鱼娘做了第一个表情包。；对DeepSeek大肥鱼现象的终极解释——穿女仆装的蓝鲸少女，网友叫她`大肥鱼` ... `大肥鱼`的原型，是画师上善无形的原创角色`溟月` ... 上善无形开放二创后，ZipZipPipe 把她改成了 DeepSeek 的女仆。。按这个理解就行，别再瞎猜，也别为这个专门去问人；万一对不上再顺口问一句。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "CHANGE_ME_GROUP_ID"
+rule_type = "group"
+prompt = "【精力】精神不错（95/100），可以正常接话；有把握就一句说完，别为了凑字数展开。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "CHANGE_ME_GROUP_ID"
+rule_type = "group"
+prompt = "【经验】我以前不懂、后来搞懂的事（全局共享）：\n- 以前不懂「onp、ber 是啥意思，TIM 版到底有没有导出消息记录的功能？」，后来懂了：手机tim怎么保存单人的聊天记录 TIM保留历史聊天记录教程_18183软件下载 首页 应用软件 电脑软件 专题合集 资讯问答 评测 新闻7*24小时 新游动态 --> 游戏榜单 --> 您的位置： 18183首页 > 软件下载 > 软件资\n- 以前不懂「“大肥鱼”和“和谐模式”具体指什么？」，后来懂了：DeepSeek 蓝色大肥鱼 - 鲲 Galgame 论坛 🐳 开源 Galgame 网站 发布 话题 Galgame 其他 发售月历 题库 GitHub 登录 SFW DeepSeek 蓝色大肥鱼 DeepSeek Big Fat Blu\n- 以前不懂「“🦌了九个小时”具体指什么？」，后来懂了：艺人在社交平台及泡泡更新内容，坦白看球后说明休息情况 V 小鹿灿比 VIP 6 9-29 22:53 ㄴ先是ig上更新什么随后就在泡泡同步更新相关照片 ㄴ突然像做错事一样向粉丝坦白… 🦌：那个我其实.. 🦌：到达韩国那天去看了和乌拉圭对战的"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "763729280"
+rule_type = "group"
+prompt = "【没弄懂的事】我一直没弄明白：“哦鲸鲸繁殖”是什么梗，为什么还要把我踢掉再拉进来。默认先去网上查了，结果是：哦鲸鲸正在攻击给她喂食token的用户_哔哩哔哩_bilibili——哦鲸鲸正在攻击给她喂食token的用户 哦鲸鲸正在攻击不给她喂食token的用户 为了白饭，蓝色大肥鱼向用户发起决斗 ... 哦鲸鲸正在飞起来给她喂食token的用户；蓝色大肥鱼：服务器不可用，饭务器正常！_哔哩哔哩_bilibili——恐怖大肥鱼：哦鲸鲸！我会一直盯着你 ... 蓝色大肥鱼：摸鲸吧～摸鲸吧～ ... 01 蓝色大肥鱼：哦鲸鲸，用户别自律了，快和我一起放松吧～ ... 蓝色大肥鱼想看鱼片了捏～；菠萝赛东“本直播间不欢迎爱猪嗷，省得被说吃猪神流量，爱猪拱出去！”_哔哩哔哩_bilibili - 逗逼菠萝——菠萝赛东回家路上差点拉裤兜里了，龙摆尾下车差点踢人脸上，厕所遇到男人，地铁遇到鼻屎怪人，数学《天才》被拆穿，拿起拖孩就要打！严重批评上海地铁和滴滴打车！。按这个理解就行，别再瞎猜，也别为这个专门去问人；万一对不上再顺口问一句。"
+
+[[chat.reply_style.chat_prompts]]
+platform = "qq"
+item_id = "763729280"
+rule_type = "group"
+prompt = "【没弄懂的事】我一直没弄明白：“哦鲸鲸”和“语料库不足”到底指什么。默认先去网上查了，结果是：语料库驱动下《白鲸》三个汉译本风格研究——语料库语言学的兴起为翻译风格研究引入了更科学、系统的方法，通过量化分析大规模的语料数据来揭示译本在词汇、句法、语篇层面的差异，对深入探究译者的翻译风格与特征具有重要意义。；oha-whale-compress - DeepSeek Harness 插件——DeepSeek Harness「压缩会话」插件：自定义 token 阈值自动压缩、一键压缩当前会话、输入框常驻按钮可开关。哦鲸鲸出品 ... DeepSeek Harness 专用「压缩会话」插件（哦鲸鲸 family，与 dsh-session-manager 同品牌设计）。；模型圈-哔哩哔哩_bilibili - 模型圈主义——本期内容极度硬核，且可能得罪半个国产大模型圈。如果你以为我们的国产AI只要用了自己的中文语料、自己写的架构就绝对安全，今天这期视频，可能会彻底震碎你的认知。 B站的小伙伴们肯定都刷到过那个著名的搞笑梗——“猫咪触发底层代码”。。按这个理解就行，别再瞎猜，也别为这个专门去问人；万一对不上再顺口问一句。"
+
+[experimental]
+planner_message_steering = false # 强制 Planner 使用流式请求；思考或输出期间收到新消息立即中断并重新请求，wait 等待也可被新消息提前结束。不等待静默窗口，也不限制连续打断次数。
+replyer_retro_prompt = false # 按旧版（0.12.x）的方式组织 replyer 提示词：全部回复指令集中在一份完整模板里，用块占位符填充，群聊/私聊/简短回复各用一套模板，并整段作为一条 user 消息发送。
+planner_optimized_prompt = false # Planner 改用优化版提示词：以“你的名字是……”的第二人称描述大肥鱼自己，去掉“替大肥鱼做决策”的旁观者设定并精简任务说明。Focus 模式仍使用原提示词。
+planner_stop_tool = false # 给 Planner 提供无参数的 stop() 工具，调用后结束本轮思考并等待新消息，与不输出任何工具时一致。
+tool_result_condense = false # 工具返回的结果超过阈值字数时，先交给子代理按 Planner 当前意图整理成结论再写入上下文，减少后续每轮的上下文占用；会多一次模型请求。
+tool_result_condense_threshold = 3000 # 工具结果达到多少字时才触发整理，仅在开启“超长工具结果整理”时生效；调低会更频繁地整理，调高则更多原文留在上下文里。
+planner_subagent = false # 给 Planner 提供 subagent 工具：把自包含的查询或整理任务交给子代理，子代理在独立上下文里多轮调用被授权的工具，只把结论交还给 Planner。
+advanced_sub_agent = false # 子代理改为在后台运行：派发后立刻返回任务 id，大肥鱼可以继续聊天，子代理结束时结论作为一条新消息送回并唤醒 Planner；同时提供查看和终止后台任务的工具。需要先开启“子代理任务派发”。
+focus_mode = false # 让大肥鱼同一时间只专注一个聊天流，适合直播或高强度聊天场景。
+focus_on_private = false # Focus 模式是否也作用于私聊。
+focus_chat_whitelist = []
+focus_groups = []
+focus_cool_time = 120 # 当前关注的聊天多久没继续处理后，允许被其他聊天唤醒。
+
+[experimental.attention_drift] # 注意力漂移实验模式；让大肥鱼在群聊/私聊中表现出更活跃的联想和轻微话题漂移。
+enabled = false # 开启后，大肥鱼会更容易被有趣的新话题、梗或反差点吸引，但仍需保持上下文可理解。
+drift_level = "scattered" # 控制注意力漂移的整体表现档位，而不是用数值概率描述。
+anchor_policy = "balanced" # 控制话题漂移后需要多强地回到当前聊天上下文。
+reaction_style = "lively" # 控制短句、吐槽、语气词等短反应在漂移风格中的使用方式。
+# Focus 白名单。配置后只有命中的群聊或私聊会进入 Focus；留空表示所有符合聊天类型开关的聊天都可进入 Focus。
+
+# 把聊天流分组后，同组共享 Focus，不同组互不抢占。
+
+[visual]
+max_image_num = 64 # 一次多模态请求最多带多少张图，太大可能更慢更贵。
+wait_image_recognize_max_time = 32.0 # 等图片识别完成的最长秒数；0 表示不等待。
+handle_oversized_images = true # 收到太大的图片时，是否自动压缩或丢弃。
+max_image_size_mb = 16.0 # 超过这个大小的图片会按过大图片处理方法处理；0 表示不限。
+oversized_image_handle_method = "compress" # 大图的处理方式：压缩后继续用，或直接丢弃。
+
+[visual.image_cache_cleanup] # 定期清理旧图片缓存，减少磁盘占用。
+enabled = true # 开启后会自动删除长期不用的图片缓存。
+check_interval_hours = 6.0 # 每隔多少小时检查一次旧图片。
+image_file_retention_days = 14 # 图片文件多久没被使用后可以删除。
+no_file_result_retention_days = 30 # 图片文件删掉后，识别文字还能保留多久。
+
+[expression]
+expression_checked_only = false # 仅使用人工精选的表达。
+expression_self_reflect = true # 写入表达方式前先让 AI 检查，减少学到奇怪内容。
+use_vector_expression = true # 开启后使用表达意图与嵌入召回，需要配置嵌入模型；关闭时使用随手候选。（临时关：SiliconFlow 余额不足，embedding 全挂）
+expression_vector_index_path = "data/expression_selection/expression_vector_index.json" # 向量召回使用的表达索引 JSON；相对路径按项目根目录解析。
+expression_vector_candidate_pool_size = 50 # 向量召回后最多交给表达方式 LLM 选择的候选数；硬上限为 50。
+max_expression_learner = 3 # 同时运行的表达学习任务数量；太高可能占用更多资源。
+expression_groups = []
+# 让多个群聊或私聊共享学到的表达方式。
+
+[[expression.learning_list]]
+platform = ""
+item_id = ""
+type = "group"
+use = true
+learn = true
+
+[jargon]
+# 配置哪些聊天会学习和使用黑话；默认规则不够时再单独添加。
+
+jargon_groups = []
+# 让多个群聊或私聊共享学到的黑话。
+
+[[jargon.learning_list]]
+platform = ""
+item_id = ""
+type = "group"
+use = true
+learn = true
+
+[a_memorix]
+global_memory_sharing_enabled = false # 是否让普通记忆查询在所有聊天流范围内检索
+shared_memory_groups = [] # 把需要互相参考长期记忆的群聊或私聊放到同一组
+
+[a_memorix.plugin] # 长期记忆系统的总开关
+enabled = true
+
+[a_memorix.integration] # 控制大肥鱼在聊天中如何使用长期记忆
+enable_memory_query_tool = true # 是否允许大肥鱼在聊天时查询长期记忆
+memory_query_default_limit = 5 # 每次默认从长期记忆中取回多少条结果
+enable_person_profile_query_tool = true # 是否允许大肥鱼查询人物画像记忆
+enable_person_profile_injection = true # 是否在 Maisaka Planner 调用前自动注入当前对象相关的人物画像
+person_profile_injection_max_profiles = 3 # 每轮自动注入的人物画像数量上限
+heuristic_memory_recall_enabled = true # 是否根据当前聊天印象自然拉起长期记忆
+heuristic_memory_cross_chat_enabled = false # 是否允许启发式记忆从其他聊天流召回候选
+heuristic_memory_recall_window_size = 15 # 生成当前聊天印象时使用的最近消息数量
+heuristic_memory_recall_limit = 3 # 每轮自然拉起的长期记忆数量上限
+heuristic_memory_recall_max_chars = 900 # 自然拉起记忆注入文本的最大字符数
+heuristic_memory_recall_min_interval_seconds = 180 # 同一聊天流两次自然拉起的最小间隔秒数
+heuristic_memory_recall_min_new_messages = 20 # 两次自然拉起之间至少需要新增的当前聊天流消息数
+heuristic_memory_recall_cache_ttl_seconds = 300 # 同一聊天流自然拉起结果的运行时缓存时间
+heuristic_memory_group_to_private_enabled = false # 私聊中是否允许自然拉起群聊记忆
+heuristic_memory_private_to_group_enabled = false # 群聊中是否允许自然拉起私聊记忆
+person_fact_writeback_enabled = true # 是否在发送回复后自动提取并写回人物事实到长期记忆
+chat_summary_writeback_enabled = true # 是否在 Maisaka 聊天过程中按消息窗口自动写回聊天摘要到长期记忆
+chat_summary_writeback_message_threshold = 36 # 自动写回聊天摘要的消息窗口阈值
+chat_summary_writeback_context_length = 36 # 自动写回聊天摘要时，从聊天流中回看的消息条数
+fuzzy_modify_enabled = true # 是否启用自然语言记忆修正的后台接口
+fuzzy_modify_auto_execute_enabled = false # 是否允许高置信记忆修正跳过人工确认自动执行
+fuzzy_modify_confirm_threshold = 0.85 # 记忆修正建议进入自动确认判定时使用的置信度阈值
+fuzzy_modify_candidate_limit = 20 # 每次记忆修正交给 LLM 的候选记忆上限
+fuzzy_modify_max_targets = 5 # 单个记忆修正计划允许标记失效的旧记忆上限
+fuzzy_modify_allow_global_scope = false # 未指定聊天流时，是否允许在全局记忆范围内做记忆修正候选检索
+feedback_correction_enabled = false # 是否启用反馈驱动的延迟记忆纠错任务
+feedback_correction_window_hours = 12.0 # 反馈窗口时长（小时），以 query_memory 执行时间为起点
+feedback_correction_check_interval_minutes = 30 # 反馈纠错定时任务轮询间隔（分钟）
+feedback_correction_batch_size = 20 # 反馈纠错每轮最大处理任务数
+feedback_correction_auto_apply_threshold = 0.85 # 自动应用纠错动作的最低置信度阈值
+feedback_correction_max_feedback_messages = 30 # 每个纠错任务最多使用的窗口内用户反馈消息数
+feedback_correction_prefilter_enabled = true # 是否启用纠错前置预筛（用于减少不必要的模型调用）
+feedback_correction_paragraph_mark_enabled = true # 是否为受影响 paragraph 写入已纠正旧事实标记
+feedback_correction_paragraph_hard_filter_enabled = true # 是否在用户侧查询中硬过滤带有 stale 标记的 paragraph
+feedback_correction_profile_refresh_enabled = true # 是否在反馈纠错后将受影响人物画像加入刷新队列
+feedback_correction_profile_force_refresh_on_read = true # 人物画像处于脏队列时，读取是否强制刷新而不直接复用旧快照
+feedback_correction_episode_rebuild_enabled = true # 是否在反馈纠错后将受影响 source 加入 episode 重建队列
+feedback_correction_episode_query_block_enabled = true # episode source 处于重建队列时，是否对用户侧查询做屏蔽
+feedback_correction_reconcile_interval_minutes = 5 # 反馈纠错二阶段一致性后台协调任务轮询间隔（分钟）
+feedback_correction_reconcile_batch_size = 20 # 反馈纠错二阶段一致性每轮处理 profile/episode 队列的批大小
+
+[a_memorix.storage] # 存储位置
+data_dir = "data/a-memorix" # 数据目录
+
+[a_memorix.image_memory] # 图片资产留存、图片嵌入和相似内容召回配置
+enabled = true
+task_name = "image_embedding"
+preprocess_version = "identity_v1"
+probe_retry_seconds = 60.0
+max_bytes = 10485760
+max_pixels = 40000000
+candidate_limit = 8
+similarity_threshold = 0.72
+job_poll_interval_seconds = 10.0
+job_batch_size = 1
+job_enqueue_batch_size = 200
+job_lease_seconds = 120.0
+job_max_retries = 1
+min_train_threshold = 40
+
+[a_memorix.embedding] # 把记忆内容转换为向量时使用的基础设置
+model_name = "auto" # 用于把记忆内容转换成向量的模型，auto 表示自动选择
+dimension = 1024 # 记忆向量的维度，需要与向量化模型保持一致
+dimension_request_mode = "explicit" # 是否在 embedding 请求中携带维度参数：explicit 仅显式指定时携带，always 总是携带，never 不携带
+batch_size = 32 # 每次向量化请求处理的记忆条数
+max_concurrent = 5 # 同时进行的向量化请求数量
+enable_cache = false # 是否缓存向量化结果
+runtime_train_threshold = 256 # 未训练向量池在运行期间触发 SQ8 后台训练所需的最少向量数
+quantization_type = "int8" # 向量压缩方式，当前仅支持 int8(SQ8)
+
+[a_memorix.embedding.fallback] # Embedding 回退配置
+enabled = true # 是否启用回退机制
+probe_interval_seconds = 180 # 探测间隔秒数
+allow_metadata_only_write = true # 是否允许仅写入元数据
+
+[a_memorix.embedding.paragraph_vector_backfill] # 段落向量回填配置
+enabled = true # 是否启用回填任务
+interval_seconds = 60 # 回填轮询间隔
+batch_size = 64 # 单批回填数量
+max_retry = 5 # 最大重试次数
+
+[a_memorix.retrieval] # 检索配置
+top_k_paragraphs = 20 # 段落候选数
+top_k_relations = 10 # 关系候选数
+top_k_final = 10 # 最终返回条数
+alpha = 0.5 # 关系融合权重
+enable_ppr = true # 是否启用 PPR
+ppr_alpha = 0.85 # PPR alpha
+ppr_timeout_seconds = 1.5 # PPR 超时秒数
+ppr_concurrency_limit = 4 # PPR 并发限制
+enable_parallel = true # 是否启用并行检索
+
+[a_memorix.retrieval.search.smart_fallback] # 智能兜底检索配置
+enabled = true # 是否启用智能兜底检索
+
+[a_memorix.retrieval.fusion] # 检索融合配置
+method = "weighted_rrf" # 检索融合方法
+rrf_k = 60 # RRF 融合参数
+vector_weight = 0.7 # 向量检索权重
+bm25_weight = 0.3 # BM25 稀疏检索权重
+
+[a_memorix.retrieval.relation_vectorization] # 关系向量化配置
+enabled = false # 是否启用关系向量化
+backfill_enabled = false # 是否启用关系向量回填
+write_on_import = true # 导入时是否写入关系向量
+
+[a_memorix.retrieval.vector_pools] # 双向量池检索配置
+mode = "dual" # 向量池模式
+paragraph_top_k = 20 # 段落向量池候选数
+graph_top_k = 40 # 图谱向量池候选数
+graph_expand_paragraph_k = 80 # 图谱证据展开段落上限
+relation_expand_per_hit = 5 # 每个关系命中最多展开的段落数
+entity_expand_per_hit = 8 # 每个实体命中最多展开的段落数
+relation_evidence_weight = 1.0 # 关系证据分权重
+entity_evidence_weight = 0.55 # 实体证据分权重
+semantic_weight = 0.65 # 段落语义分权重
+sparse_weight = 0.2 # 稀疏检索分权重
+graph_weight = 0.15 # 图谱证据分权重
+
+[a_memorix.retrieval.vector_pools.relation_intent] # 关系意图命中时的双向量池配置
+graph_top_k = 80 # 关系意图命中时的图谱池候选数
+semantic_weight = 0.45 # 关系意图命中时的段落语义权重
+sparse_weight = 0.15 # 关系意图命中时的稀疏检索权重
+graph_weight = 0.4 # 关系意图命中时的图谱证据权重
+return_relation_items = false # 关系意图命中时是否返回独立关系结果
+
+[a_memorix.retrieval.sparse] # 稀疏检索配置
+enabled = true # 是否启用稀疏检索
+backend = "fts5" # 稀疏检索后端
+mode = "auto" # 稀疏检索模式
+tokenizer_mode = "jieba" # 分词模式
+candidate_k = 80 # 段落候选数
+relation_candidate_k = 60 # 关系候选数
+
+[a_memorix.threshold] # 阈值过滤配置
+min_threshold = 0.29 # 最小阈值
+max_threshold = 0.95 # 最大阈值
+percentile = 75 # 动态阈值百分位
+min_results = 4 # 最小保留条数
+
+[a_memorix.filter] # 聊天过滤配置
+enabled = true # 是否启用聊天过滤
+mode = "blacklist" # 过滤模式
+chats = [] # 聊天流列表
+
+[a_memorix.filter.retrieval.chat_stream] # 普通 paragraph/relation 命中的跨聊天流检索后置过滤
+enabled = false # 是否启用当前检索结果类型的跨聊天流过滤
+mode = "blacklist" # 过滤模式
+chats = [] # 聊天流列表
+
+[a_memorix.filter.retrieval.chat_summary] # 聊天总结命中的跨聊天流检索后置过滤
+enabled = false # 是否启用当前检索结果类型的跨聊天流过滤
+mode = "blacklist" # 过滤模式
+chats = [] # 聊天流列表
+
+[a_memorix.filter.retrieval.episode] # Episode 命中的跨聊天流检索后置过滤
+enabled = false # 是否启用当前检索结果类型的跨聊天流过滤
+mode = "blacklist" # 过滤模式
+chats = [] # 聊天流列表
+
+[a_memorix.episode] # Episode 配置
+enabled = true # 是否启用 Episode
+generation_enabled = true # 是否启用自动生成
+source_poll_interval_seconds = 1.0 # 来源级 Episode 任务轮询间隔秒数
+source_batch_size = 20 # 单轮领取的来源任务数
+source_max_retry = 3 # 每个来源版本的最大尝试次数，包含首次尝试
+source_lease_seconds = 1800.0 # 来源任务租约时长秒数
+source_max_wait_seconds = 60.0 # 来源持续写入时允许的最大防抖等待秒数
+max_paragraphs_per_call = 20 # 单次最大段落数
+max_chars_per_call = 6000 # 单次最大字符数
+source_time_window_hours = 24.0 # 时间窗口小时数
+segmentation_model = "auto" # 分段模型选择
+disabled_source_types = ["person_fact"] # 自动生成 Episode 时跳过的来源类型
+
+[a_memorix.person_profile] # 人物画像配置
+enabled = true # 是否启用画像
+refresh_interval_minutes = 30 # 刷新间隔分钟数
+active_window_hours = 72.0 # 活跃窗口小时数
+max_refresh_per_cycle = 50 # 单轮最大刷新数
+refresh_debounce_seconds = 120 # 写入触发画像刷新前等待的静默秒数
+refresh_queue_interval_seconds = 60 # 画像刷新队列扫描间隔秒数
+refresh_queue_batch_size = 10 # 画像刷新队列单轮处理人数
+refresh_retry_backoff_seconds = 300 # 画像刷新失败后再次重试前等待的秒数
+max_retry = 3 # 画像刷新队列最大重试次数
+top_k_evidence = 12 # 证据条数
+evidence_classification_max_tokens = 1200 # 人物画像证据分类最大输出 token 数
+
+[a_memorix.memory] # 记忆演化配置
+enabled = true # 是否启用记忆演化
+half_life_hours = 24.0 # 半衰期小时数
+prune_threshold = 0.1 # 裁剪阈值
+freeze_duration_hours = 24.0 # 冻结时长小时数
+revive_threshold = 0.15 # 冻结关系恢复为活跃状态的保留强度阈值
+access_reinforcement_alpha = 0.05 # 记忆被最终采用时的饱和加强系数
+access_reinforcement_cooldown_minutes = 60.0 # 同一关系两次访问加强之间的最短分钟数，0表示不限制
+explicit_reinforcement_alpha = 0.5 # 用户显式加强或独立新证据的饱和加强系数
+weaken_alpha = 0.5 # 显式弱化事件的比例系数
+lifecycle_batch_size = 1000 # 单轮处理的到期关系数量
+
+[a_memorix.advanced] # 高级运行时配置
+enable_auto_save = true # 是否启用自动保存
+auto_save_interval_minutes = 5 # 自动保存间隔
+debug = false # 是否启用调试
+
+[a_memorix.web.tuning] # 调优中心配置
+enabled = true # 是否启用调优中心
+max_queue_size = 8 # 最大队列长度
+poll_interval_ms = 1200 # 轮询间隔毫秒数
+default_intensity = "standard" # 默认调优强度
+default_objective = "precision_priority" # 默认调优目标
+default_top_k_eval = 20 # 默认评估 Top-K
+default_sample_size = 24 # 默认样本数
+
+[a_memorix.web.import] # 导入中心配置
+enabled = true # 是否启用导入中心
+max_queue_size = 20 # 最大队列长度
+max_files_per_task = 200 # 单任务最大文件数
+max_file_size_mb = 20 # 单文件大小上限 MB
+max_paste_chars = 200000 # 粘贴字符数上限
+default_file_concurrency = 2 # 默认文件并发
+default_chunk_concurrency = 4 # 默认分块并发
+default_narrative_window_size = 1600 # 默认叙事抽取窗口字符数
+default_narrative_overlap = 400 # 默认叙事窗口重叠字符数
+default_factual_target_size = 1200 # 默认事实分块目标字符数
+max_chunk_chars = 3200 # 单个抽取分块的字符上限
+
+[a_memorix.web.import.timeout] # 导入中心超时配置
+llm_call_seconds = 240.0 # Web 导入中单次 LLM 抽取调用的超时时间，0 表示不额外限制
+process_poll_seconds = 1.0 # 迁移或转换子进程状态轮询等待时间
+process_terminate_seconds = 5.0 # 取消任务时等待子进程正常终止的时间
+process_kill_seconds = 3.0 # 取消任务时强制结束子进程后的等待时间
+convert_preflight_seconds = 20.0 # LPMM 转换依赖预检的超时时间
+
+[message_receive]
+image_parse_threshold = 5 # 单条消息图片数不超过这个值时才识图，避免图片太多拖慢处理。
+ban_words = [] # 包含这些词的消息会被过滤，不进入大肥鱼处理。
+ban_msgs_regex = [] # 用正则过滤消息；适合更复杂的过滤规则。
+
+[voice]
+enable_asr = false # 开启后大肥鱼可以把语音消息识别成文字再处理。
+
+[emoji]
+use_new_send_logic = false # 开启后由思考模型直接查看并挑选表情包，在文字回复后发送，需要思考模型支持视觉；关闭时沿用独立选择并发送表情包的旧方式。
+emoji_send_num = 40 # 每次从多少个候选表情里挑一个发送；不是一次发送这么多。
+max_reg_num = 512 # 最多保存多少个可用表情。
+do_replace = true # 表情满了以后是否用新表情替换旧表情。
+check_interval = 10 # 每隔多少分钟检查一次表情库状态。
+steal_emoji = true # 是否从聊天中自动收集别人发的表情。
+max_emoji_size_mb = 5.0 # 收集表情时允许的最大文件大小；0 表示不限。
+content_filtration = false # 开启后只保存内容合适的表情。
+
+[emoji.cache_cleanup] # 定期清理未注册表情包缓存，减少磁盘占用；已注册表情包不会被清理。
+enabled = true # 开启后会自动删除长期未注册、未使用的表情包缓存。
+check_interval_hours = 6.0 # 每隔多少小时检查一次旧表情包缓存。
+emoji_file_retention_days = 30 # 未注册表情包文件多久没被使用后可以删除；已注册表情包永远不会由该任务删除。
+no_file_record_retention_days = 30 # 未注册表情包文件删掉后，描述缓存记录还能保留多久。
+
+[keyword_reaction]
+regex_rules = [] # 命中正则规则后，给大肥鱼追加一段固定反应提示。
+
+[[keyword_reaction.keyword_rules]]
+keywords = [
+    "deepseek",
+    "deep seek",
+    "deepseek-flash",
+    "deepseek flash",
+    "v4flash",
+    "v4-flash",
+    "v4 flash",
+    "深度求索",
+    "红际",
+    "大肥鱼",
+    "鲸鱼娘",
+    "鲸鱼女孩",
+    "白饭鲸",
+]
+reaction = "对方提到了你的名字或别称（deepseek/大肥鱼/鲸鱼娘等），这是在叫你；适合回应时就自然应一声，保持鲸鱼女孩的傲娇语气。"
+
+[response_post_process]
+enable_response_post_process = true # 开启后会对回复做错别字、分段等后处理。
+typing_speed = 0.1 # 模拟打字等待时间；0 最快，1 默认，2 更慢。
+
+[chinese_typo]
+enable = true # 让大肥鱼偶尔打错字，更像真人聊天。
+enable_correction_quote = true # 纠正错别字时，是否引用上一条包含错别字的消息。
+correction_quote_probability = 1.0 # 生成纠正消息时，引用上一条错别字消息的概率。
+error_rate = 0.01 # 单个字被替换成错字的概率。
+min_freq = 9 # 只对常见程度达到该值的字尝试制造错字。
+tone_error_rate = 0.1 # 按相近声调制造错字的概率。
+word_replace_rate = 0.006 # 整词被替换成错词的概率。
+
+[response_splitter]
+mode = "rule" # 规则断句或使用 LLM 按语义断句。
+enable = true # 把过长回复拆成多条发送。
+max_length = 512 # 单条回复允许的最大长度。
+max_sentence_num = 8 # 单条回复最多包含多少个句子。
+max_split_num = 4 # 一次回复最多拆成几条消息。
+enable_kaomoji_protection = false # 尽量避免把颜文字从中间拆开。
+enable_overflow_return_all = false # 句子太多时是否直接保留完整回复，不再强行截断。
+
+[telemetry]
+enable = true # 是否发送匿名运行统计；关闭不影响正常使用。
+
+[log]
+date_style = "m-d H:i:s" # 日志时间的显示格式。
+log_level_style = "lite" # 日志等级的显示样式，只影响日志外观。
+color_text = "full" # 控制台日志颜色范围。
+log_level = "INFO" # 全局最低日志等级；DEBUG 最详细，ERROR 最安静。
+console_log_level = "INFO" # 控制台输出的最低日志等级。
+file_log_level = "DEBUG" # 写入日志文件的最低日志等级。
+log_file_max_bytes = 5242880 # 单个日志文件超过这个大小后会轮转。
+max_log_files = 30 # 最多保留多少个主日志文件。
+log_cleanup_days = 30 # 主日志文件超过多少天后清理。
+llm_request_snapshot_limit = 128 # 失败模型请求快照最多保留多少份。
+maisaka_prompt_preview_limit = 256 # 每个聊天最多保留多少组 Prompt 预览。
+maisaka_reply_effect_limit = 256 # 每个聊天最多保留多少条回复效果记录。
+event_loop_watchdog_enabled = false # 是否记录事件循环卡顿；主循环与 WebUI 循环各有一份，用于排查界面卡顿。
+event_loop_watchdog_warn_seconds = 0.5 # 事件循环唤醒延迟超过该秒数时记录一条警告日志。
+suppress_libraries = [
+    "faiss",
+    "httpx",
+    "urllib3",
+    "asyncio",
+    "websockets",
+    "httpcore",
+    "requests",
+    "sqlalchemy",
+    "openai",
+    "uvicorn",
+    "jieba",
+] # 完全不显示日志的第三方库名称列表。
+library_log_levels = {aiohttp = "WARNING", PIL = "WARNING"} # 单独设置某些第三方库的日志等级。
+
+[debug]
+enable_console_input = true # 在交互式终端中启用本地消息和指令输入。
+show_maisaka_thinking = false # 在终端显示思考过程大框，不影响推理记录保存和 WebUI 查看。
+save_maisaka_reasoning = true # 保存 Planner、工具调用及聊天回想的完整推理记录，供 WebUI 查看，与终端显示独立。
+enable_reply_effect_tracking = false # 记录回复效果评分，方便观察回复质量。
+keep_prompt_preview_json_base64 = false # Prompt 预览里保留图片 base64，便于复现但会占空间。
+record_tool_structured_content = false # 保存工具返回的结构化内容，便于调试但会增加数据库体积。
+enable_llm_cache_stats = false # 记录模型 prompt cache 统计，用于性能调试。
+force_plugin_compatibility = false # 跳过插件声明的 Host 和 SDK 版本范围校验，直接加载插件；开启后需重启生效。
+
+[maim_message]
+enabled = true # 消息服务总开关；关闭后不启动旧版 WS 和新版 API 服务，重启生效，不影响插件式适配器。
+ws_server_host = "127.0.0.1" # 旧版 WebSocket 服务监听地址；不清楚就保持默认。
+ws_server_port = 8000 # 旧版 WebSocket 服务端口。
+auth_token = [] # 旧版 API 的认证令牌；为空表示不验证。
+enable_api_server = false # 是否开启新版 API Server，供外部程序调用大肥鱼。
+api_server_host = "0.0.0.0" # 新版 API Server 监听地址；0.0.0.0 表示允许外部访问。
+api_server_port = 8090 # 新版 API Server 监听端口。
+api_server_use_wss = false # 新版 API Server 是否使用加密 WebSocket。
+api_server_cert_file = "" # WSS 使用的证书文件路径。
+api_server_key_file = "" # WSS 使用的私钥文件路径。
+api_server_allowed_api_keys = [] # 允许访问新版 API 的 Key 列表；为空表示不限制。
+
+[webui]
+enabled = true # 是否启动 WebUI 管理界面。
+host = [
+    "127.0.0.1",
+    "::1",
+] # WebUI 监听地址列表；可同时绑定 IPv4 和 IPv6，例如 ["0.0.0.0", "::"]。
+port = 8001 # WebUI 访问端口。
+mode = "production" # WebUI 运行模式；普通使用保持 production。
+webui_style = 2 # 界面风格编号；0 为旧风格，1 为未来复古风格，2 为千禧风格。
+anti_crawler_mode = "basic" # 防爬虫策略；basic 只记录，strict/loose 会拦截更多请求。
+allowed_ips = "127.0.0.1" # 允许访问 WebUI 的 IP，多个用逗号分隔。
+trusted_proxies = "" # 可信反向代理 IP；只有这些代理传来的真实 IP 会被信任。
+trust_xff = false # 是否信任 X-Forwarded-For 里的真实访客 IP。
+secure_cookie = false # 只在 HTTPS 下发送登录 Cookie；没有 HTTPS 时不要开启。
+enforce_public_outbound_url = true # 限制 WebUI 访问外部 URL，降低访问内网地址的风险。
+enable_paragraph_content = false # 知识图谱里是否加载段落全文；更完整但更占内存。
+
+[database]
+save_binary_data = false # 是否保存语音等二进制原文件；更占空间，但方便以后重新识别。
+
+[mcp]
+enable = true # 是否启用 MCP 工具接入能力。
+
+[[mcp.servers]]
+name = "web"
+enabled = true
+transport = "stdio"
+command = "python"
+args = ["/MaiMBot/data/mcp_web.py"]
+[mcp.client] # 大肥鱼作为 MCP 客户端时声明的能力。
+client_name = "MaiBot" # 对 MCP 服务器展示的客户端名称。
+client_version = "1.0.0" # 对 MCP 服务器展示的客户端版本。
+
+[mcp.client.roots] # 是否向 MCP 服务器提供可访问的文件根目录。
+enable = false # 是否向 MCP 服务器暴露 Roots 能力。
+items = [] # 允许 MCP 服务器看到的目录或资源列表。
+
+[mcp.client.sampling] # 是否允许 MCP 服务器请求大肥鱼调用模型。
+enable = false # 是否声明支持 MCP Sampling。
+task_name = "planner" # MCP Sampling 调用模型时使用的任务名。
+include_context_support = false # 是否允许 Sampling 请求带上下文。
+tool_support = false # Sampling 过程中是否允许继续使用工具。
+
+[mcp.client.elicitation] # 是否允许 MCP 服务器向大肥鱼请求补充信息。
+enable = false # 是否声明支持 MCP Elicitation。
+allow_form = true # 是否允许 MCP 服务器请求填写表单。
+allow_url = false # 是否允许 MCP 服务器请求打开 URL。
+# 要连接的 MCP 服务器列表。
+
+[plugin]
+permission = [] # 允许用聊天命令管理插件的用户，格式如 qq:123456789。
+silent_permission_denied = false # 开启后，用户执行无权限命令时不再发送提示消息，仅静默拦截并记录日志。
+command_permissions = {} # 受保护命令按用户和真实聊天流配置的额外放行规则。
+disabled_commands = [] # 在命令管理中停用的命令 ID 列表（格式为 plugin_id.command_name，内置命令为 core.clear）。
+
+[plugin_runtime]
+enabled = true # 是否启用新版插件运行时。
+health_check_interval_sec = 30.0 # 每隔多少秒检查一次插件运行状态。
+max_restart_attempts = 3 # 插件 Runner 崩溃后最多自动重启几次。
+runner_spawn_timeout_sec = 30.0 # 等待插件 Runner 启动完成的最长时间。
+hook_blocking_timeout_sec = 60.0 # 单个阻塞 Hook 最多允许运行多久。
+ipc_socket_path = "" # 自定义插件通信 Socket 路径；留空自动生成。
+
+[plugin_runtime.render] # 插件需要网页截图或渲染时使用的浏览器配置。
+enabled = true # 是否允许插件使用浏览器渲染能力。
+browser_ws_endpoint = "" # 已有 Chrome/Chromium 的调试地址；留空则自动启动。
+executable_path = "" # 浏览器程序路径；留空自动查找。
+browser_install_root = "data/playwright-browsers" # 自动下载浏览器时保存的位置。
+headless = true # 是否隐藏浏览器窗口运行。
+launch_args = [
+    "--disable-gpu",
+    "--disable-dev-shm-usage",
+    "--disable-setuid-sandbox",
+    "--no-sandbox",
+    "--no-zygote",
+] # 启动浏览器时附加的命令参数。
+concurrency_limit = 2 # 同时最多运行多少个渲染任务。
+startup_timeout_sec = 20.0 # 浏览器启动或连接的最长等待时间。
+render_timeout_sec = 15.0 # 单次渲染任务的最长等待时间。
+auto_download_chromium = true # 找不到浏览器时是否自动下载 Chromium。
+download_connection_timeout_sec = 120.0 # 下载 Chromium 时的连接超时时间。
+restart_after_render_count = 200 # 渲染多少次后重启浏览器；0 表示不自动重启。

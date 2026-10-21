@@ -1,0 +1,50 @@
+services:
+  memwatch:
+    build: ./src
+    container_name: memwatch
+    restart: unless-stopped
+    environment:
+      # OneBot WS：走 llbot 的服务名（原 napcat 容器已换成 llbot，napcat 只是它的别名）
+      NAPCAT_WS_URL: ws://llbot:3001
+      DEEPSEEK_KEY: ${DEEPSEEK_KEY}
+      MODEL: deepseek-flash
+      EFFORT: low
+      SELF_ID: ${BOT_QQ}
+      TZ: Asia/Shanghai
+      DATA_DIR: /data/groups
+      # 困惑默认处理：先联网查证，再决定要不要问人
+      CONFUSION_SEARCH: "1"
+      CONFUSION_SEARCH_MAX_PER_HOUR: "60"
+      CONFUSION_SEARCH_RESERVE: "12"
+      CONFUSION_BACKFILL_LIMIT: "2"
+      CONFUSION_BACKFILL_INTERVAL: "120"
+      # 命中的 URL 异步抓正文（只抓第一条，不爬站）
+      PAGE_FETCH: "1"
+      PAGE_FETCH_TIMEOUT: "6"
+      PAGE_FETCH_MAX_CHARS: "800"
+      PAGE_FETCH_CACHE_TTL: "86400"
+      PAGE_FETCH_MAX_WORKERS: "2"
+      HALF_LIFE_HOURS: "18"
+      ENERGY_TOKEN_COST: "0.045"
+      PRUNE_THRESHOLD: "0.15"
+      FORGET_ACT: "0.15"
+      TOPIC_FORGET_ACT: "0.05"
+      FORGET_PURGE: "1"
+      TOPIC_FADE_ACT: "0.15"
+      TOPIC_ARCHIVE_MAX: "100"
+      TOPIC_FORGET_MIN_AGE_H: "1"
+      FADE_ACT: "0.35"
+      FORGET_WEIGHT: "2.0"
+      MAIBOT_DB: /maibot/MaiBot.db
+    volumes:
+      - ./data:/data
+      - ../maibot/data/MaiMBot:/maibot:ro
+    mem_limit: 300m
+    memswap_limit: 500m
+    networks:
+      - default
+      - napcat_net
+networks:
+  napcat_net:
+    external: true
+    name: napcat_default

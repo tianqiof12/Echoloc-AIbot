@@ -1,0 +1,19 @@
+# /etc/systemd/system/qqbot-panel.service
+[Unit]
+Description=QQbot mobile panel
+After=network.target docker.service
+
+[Service]
+Environment=PANEL_SERVER=1
+Environment=PANEL_HOST=0.0.0.0
+Environment=PANEL_PORT=8090
+Environment=PANEL_PUBLIC_HOST=127.0.0.1
+Environment=PANEL_USER=admin
+Environment=PANEL_PASSWORD=CHANGE_ME_PANEL_PASSWORD
+ExecStart=/usr/bin/python3 /opt/qqbot-panel/napcat_desktop.py
+Restart=always
+RestartSec=5
+User=root
+
+[Install]
+WantedBy=multi-user.target
