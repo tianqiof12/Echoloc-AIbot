@@ -1,0 +1,34 @@
+name: publish npm
+
+# 打 tag 自动发布；也可以在 Actions 页面手动 Run workflow 发一次
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+
+      - name: Verify package contents
+        run: |
+          npm pack --dry-run
+          node bin/echoloc.js links
+          node bin/echoloc.js doctor || true
+
+      - name: Publish
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

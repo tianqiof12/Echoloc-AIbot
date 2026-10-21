@@ -1,0 +1,42 @@
+{
+  "name": "echoloc-qqbot",
+  "version": "1.0.0",
+  "description": "一个会遗忘的 QQ 群聊记忆体 —— 安装入口与环境自检（主程序是 Python + Docker，本包不是 Node 实现）",
+  "keywords": [
+    "qqbot",
+    "qq",
+    "onebot",
+    "llbot",
+    "maibot",
+    "deepseek",
+    "chatbot",
+    "memory",
+    "echoloc",
+    "cli"
+  ],
+  "homepage": "https://github.com/tianqiof12/Echoloc-QQbot#readme",
+  "bugs": {
+    "url": "https://github.com/tianqiof12/Echoloc-QQbot/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tianqiof12/Echoloc-QQbot.git"
+  },
+  "license": "UNLICENSED",
+  "author": "tianqiof12",
+  "type": "commonjs",
+  "bin": {
+    "echoloc": "bin/echoloc.js"
+  },
+  "files": [
+    "bin/",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node bin/echoloc.js",
+    "doctor": "node bin/echoloc.js doctor"
+  }
+}

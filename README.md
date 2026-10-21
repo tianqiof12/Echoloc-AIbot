@@ -45,10 +45,19 @@
 
 安装步骤、校验和见 [docs/release.md](docs/release.md)。桌面端不跑麦麦和 LLBot，它通过 SSH 隧道连服务器上已经跑着的两个 WebUI。
 
+## npm
+
+```bash
+npx echoloc-qqbot            # 这是什么、从哪开始
+npx echoloc-qqbot doctor     # 环境自检：docker / python / ssh 缺什么
+npx echoloc-qqbot links      # 所有相关地址
+```
+
+这个包**只是入口与自检**，不含机器人本体——本体是 Python + Docker，`npm install` 跑不起来它。发布流程在 [`.github/workflows/npm-publish.yml`](.github/workflows/npm-publish.yml)，打 `v*` tag 自动发。
+
 ## 快速开始
 
 **完整步骤看 [docs/usage.md](docs/usage.md)**，这里只给最短路径：
-
 ```bash
 # 1. 复制到服务器（保持路径不变，compose 和 systemd 都用相对路径）
 sudo cp -r server/llbot          /opt/llbot
