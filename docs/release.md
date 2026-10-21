@@ -67,12 +67,7 @@ start_desktop.cmd
 
 ## 校验和
 
-```
-2f4ac0fa1a115c917143dccef24e294d9c9f38a76ceae99183ffba7ea4483e5f  echoloc-desktop-v1.0.0.zip
-2cd9f9b5029abc447fa009e44c7526fc8495f2c2940b6899d8d9ea1bb5db9eda  echoloc-server-v1.0.0.tar.gz
-```
-
-Windows 上核对：
+包内不写死校验和——写进去就会改变包本身。下载后在 **Releases 页面**的说明里核对 SHA256，或用：
 
 ```powershell
 Get-FileHash .\echoloc-desktop-v1.0.0.zip -Algorithm SHA256
