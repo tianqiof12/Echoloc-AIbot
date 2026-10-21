@@ -9,7 +9,7 @@
 
 const { execFileSync } = require("node:child_process");
 
-const REPO = "https://github.com/tianqiof12/Echoloc-AIbot";
+const REPO = "https://github.com/tianqiof12/Echoloc-QQbot";
 const RELEASES = REPO + "/releases/latest";
 const DOCS = REPO + "/blob/main/docs/usage.md";
 const DESKTOP_DOC = REPO + "/blob/main/docs/release.md";

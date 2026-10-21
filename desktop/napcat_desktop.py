@@ -935,7 +935,7 @@ def start_ui_server(html_text, api, host="127.0.0.1", port=0, auth=None):
 
         def _deny(self):
             self.send_response(401)
-            self.send_header("WWW-Authenticate", 'Basic realm="AIbot Panel"')
+            self.send_header("WWW-Authenticate", 'Basic realm="QQbot Panel"')
             self.send_header("Content-Length", "0")
             self.end_headers()
 
