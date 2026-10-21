@@ -1,8 +1,9 @@
 {
-  "name": "@tianqiof12/echoloc-qqbot",
-  "version": "1.0.2",
+  "name": "@tianqiof12/echoloc-aibot",
+  "version": "1.0.3",
   "description": "一个会遗忘的 QQ 群聊记忆体 —— 安装入口与环境自检（主程序是 Python + Docker，本包不是 Node 实现）",
   "keywords": [
+    "aibot",
     "qqbot",
     "qq",
     "onebot",
@@ -14,13 +15,13 @@
     "echoloc",
     "cli"
   ],
-  "homepage": "https://github.com/tianqiof12/Echoloc-QQbot#readme",
+  "homepage": "https://github.com/tianqiof12/Echoloc-AIbot#readme",
   "bugs": {
-    "url": "https://github.com/tianqiof12/Echoloc-QQbot/issues"
+    "url": "https://github.com/tianqiof12/Echoloc-AIbot/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tianqiof12/Echoloc-QQbot.git"
+    "url": "git+https://github.com/tianqiof12/Echoloc-AIbot.git"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"

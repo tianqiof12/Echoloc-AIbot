@@ -89,7 +89,7 @@ jobs:
           else
             gh release create "$TAG" \
               dist/*.tar.gz dist/*.zip dist/SHA256SUMS.txt \
-              --title "$TAG —— 回声 Echoloc QQbot" \
+              --title "$TAG —— 回声 Echoloc AIbot" \
               --notes "$BODY"
           fi
           gh release view "$TAG" --json url,assets \

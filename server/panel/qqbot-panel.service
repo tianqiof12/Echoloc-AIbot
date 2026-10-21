@@ -1,6 +1,6 @@
 # /etc/systemd/system/qqbot-panel.service
 [Unit]
-Description=QQbot mobile panel
+Description=AIbot mobile panel
 After=network.target docker.service
 
 [Service]

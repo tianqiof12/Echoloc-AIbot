@@ -1,4 +1,4 @@
-# 回声 · Echoloc QQbot
+# 回声 · Echoloc AIbot
 
 > 一个会遗忘的 QQ 群聊记忆体。
 
@@ -56,12 +56,12 @@ CLI 入口发在 **GitHub Packages**，不是 npmjs——npm 那边 2026 年起�
 npm config set @tianqiof12:registry https://npm.pkg.github.com
 npm config set //npm.pkg.github.com/:_authToken=$GITHUB_TOKEN
 
-npx @tianqiof12/echoloc-qqbot           # 这是什么、从哪开始
-npx @tianqiof12/echoloc-qqbot doctor    # 环境自检：docker / python / ssh 缺什么
-npx @tianqiof12/echoloc-qqbot links     # 所有相关地址
+npx @tianqiof12/echoloc-aibot           # 这是什么、从哪开始
+npx @tianqiof12/echoloc-aibot doctor    # 环境自检：docker / python / ssh 缺什么
+npx @tianqiof12/echoloc-aibot links     # 所有相关地址
 ```
 
-包页面：https://github.com/tianqiof12/Echoloc-QQbot/pkgs/npm/echoloc-qqbot
+包页面：https://github.com/tianqiof12/Echoloc-AIbot/pkgs/npm/echoloc-aibot
 
 这个包**只是入口与自检**，不含机器人本体——本体是 Python + Docker，`npm install` 跑不起来它。发布流程在 [`.github/workflows/npm-publish.yml`](.github/workflows/npm-publish.yml)，打 `v*` tag 自动发。
 
@@ -123,6 +123,19 @@ start_desktop.cmd
 | `memwatch` | 记忆服务，连 `ws://llbot:3001` | 无对外端口 |
 | `panel` | `PANEL_SERVER=1`，手机/网页管理 | 8090 |
 | `desktop` | Windows 端，走 SSH 隧道 | 本地随机端口 |
+
+## 关于命名
+
+展示名已统一为 **Echoloc AIbot**，但下面这些仍保留 `qqbot` 字样——它们是**已经跑在服务器上的运行契约**，改名会让现有部署对不上：
+
+| 保留项 | 原因 |
+| --- | --- |
+| `/opt/qqbot-panel/` 目录 | 服务器上正在用的路径 |
+| `qqbot-panel.service` 服务名 | systemd 已注册，改名要迁移 |
+| `QQBOT_*` 环境变量 | 桌面端读取的键名，改了旧配置失效 |
+| `QQbotPanel.apk` | 已分发的安装包文件名 |
+
+新部署照旧用这些名字，不影响使用；想彻底换名，等哪天重新部署时一起迁移。
 
 ## 数据与迁移
 
