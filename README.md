@@ -45,13 +45,21 @@
 
 安装步骤、校验和见 [docs/release.md](docs/release.md)。桌面端不跑麦麦和 LLBot，它通过 SSH 隧道连服务器上已经跑着的两个 WebUI。
 
-## npm
+## 包（GitHub Packages）
+
+CLI 入口发在 **GitHub Packages**，不是 npmjs——npm 那边 2026 年起发布强制 2FA、2027 年起还要收紧，而 GitHub Packages 用仓库自带的 `GITHUB_TOKEN` 发，不需要账号也不需要动态码。
 
 ```bash
-npx echoloc-qqbot            # 这是什么、从哪开始
-npx echoloc-qqbot doctor     # 环境自检：docker / python / ssh 缺什么
-npx echoloc-qqbot links      # 所有相关地址
+# 一次性配置（把 registry 指向 GitHub，token 用你的 GitHub PAT，需 read:packages 权限）
+npm config set @tianqiof12:registry https://npm.pkg.github.com
+npm config set //npm.pkg.github.com/:_authToken=$GITHUB_TOKEN
+
+npx @tianqiof12/echoloc-qqbot           # 这是什么、从哪开始
+npx @tianqiof12/echoloc-qqbot doctor    # 环境自检：docker / python / ssh 缺什么
+npx @tianqiof12/echoloc-qqbot links     # 所有相关地址
 ```
+
+包页面：https://github.com/tianqiof12/Echoloc-QQbot/pkgs/npm/echoloc-qqbot
 
 这个包**只是入口与自检**，不含机器人本体——本体是 Python + Docker，`npm install` 跑不起来它。发布流程在 [`.github/workflows/npm-publish.yml`](.github/workflows/npm-publish.yml)，打 `v*` tag 自动发。
 

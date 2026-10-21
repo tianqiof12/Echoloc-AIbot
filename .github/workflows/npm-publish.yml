@@ -1,6 +1,8 @@
-name: publish npm
+name: publish package
 
-# 打 tag 自动发布；也可以在 Actions 页面手动 Run workflow 发一次
+# 发布到 GitHub Packages（npm 兼容 registry）。
+# 不需要 npm 账号、不需要 2FA 动态码 —— 用仓库自带的 GITHUB_TOKEN。
+# 打 v* tag 自动发布；也可以在 Actions 页面手动 Run workflow。
 on:
   push:
     tags:
@@ -12,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,7 +23,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          registry-url: https://registry.npmjs.org
+          registry-url: https://npm.pkg.github.com
+          scope: "@tianqiof12"
 
       - name: Verify package contents
         run: |
@@ -29,6 +33,6 @@ jobs:
           node bin/echoloc.js doctor || true
 
       - name: Publish
-        run: npm publish --access public
+        run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

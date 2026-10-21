@@ -25,3 +25,6 @@ ui_settings.local.json
 
 # 发布构建产物（走 Releases 附件，不进仓库历史）
 dist/
+
+# npm 项目级源配置（凭证在 ~/.npmrc，不进仓库）
+.npmrc
