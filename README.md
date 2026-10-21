@@ -96,6 +96,22 @@ start_desktop.cmd
 3. **不要同时启动 NapCat 和 LLBot 登录同一个 QQ**，会互相踢下线。这个包默认只带 LLBot。
 4. 真实配置（`.env`、`config_<QQ>.json`、`auth_token.txt` 里的真值）不要提交回仓库。
 
+## 依赖的上游项目
+
+这套东西不是从零写的。真正登录 QQ、真正收发消息、真正生成回复的，都是下面这几个项目——本项目只补了「长期状态」那一层。
+
+| 项目 | 在这里的角色 | 上游 |
+| --- | --- | --- |
+| **LLBot** | OneBot 11 协议端：QQ 登录、收发消息、群通知（当前使用） | https://github.com/LLOneBot/LLOneBot |
+| **NapCat** | 同样是一套 NTQQ 上的 OneBot 11 实现，可替换 LLBot 使用；容器网络名 `napcat_default` 就是从它沿用下来的 | https://github.com/NapNeko/NapCatQQ |
+| **MaiBot（麦麦）** | 对话核心：回复生成、planner、表情包理解与挑选、工具调用 | https://github.com/Mai-with-u/MaiBot |
+| **SnowLuma Adapter** | MaiBot 的 QQ 适配插件，让它能对接上面的协议端 | https://github.com/Mai-with-u/MaiBot-SnowLuma-Adapter |
+
+两个要点：
+
+- **LLBot 和 NapCat 二选一。** 同一时间只能有一个协议端登录同一个 QQ 号，同时开会互相踢下线。
+- **本项目不修改这三个项目的主程序**，只做配置（`docker-config/mmc`）和两个覆盖补丁（`server/maibot/patch/`）。补丁是衍生作品，许可随上游，详见 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)。
+
 ## 组成与端口
 
 | 组件 | 作用 | 端口 |
