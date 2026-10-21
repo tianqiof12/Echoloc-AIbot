@@ -38,12 +38,14 @@
 
 ## 下载
 
-发布包挂了两个附件，按需取：
+发布包挂在该 tag 的 **Releases** 里，两个附件：
 
-- **服务器端** `echoloc-server-v1.0.0.tar.gz` —— Linux，含 `server/` 全套与文档
-- **桌面端** `echoloc-desktop-v1.0.0.zip` —— Windows，pywebview 遥控面板
+- **服务器端** `echoloc-server-v<版本>.tar.gz` —— Linux，含 `server/` 全套与文档
+- **桌面端** `echoloc-desktop-v<版本>.zip` —— Windows，pywebview 遥控面板
 
-安装步骤、校验和见 [docs/release.md](docs/release.md)。桌面端不跑麦麦和 LLBot，它通过 SSH 隧道连服务器上已经跑着的两个 WebUI。
+附件由 [`.github/workflows/release.yml`](.github/workflows/release.yml) 在打 tag 时自动打包上传，同一份 `SHA256SUMS.txt` 也挂在里面。安装步骤见 [docs/release.md](docs/release.md)。
+
+桌面端不跑麦麦和 LLBot，它通过 SSH 隧道连服务器上已经跑着的两个 WebUI。
 
 ## 包（GitHub Packages）
 

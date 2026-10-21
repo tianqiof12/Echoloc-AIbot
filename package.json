@@ -1,6 +1,6 @@
 {
   "name": "@tianqiof12/echoloc-qqbot",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "一个会遗忘的 QQ 群聊记忆体 —— 安装入口与环境自检（主程序是 Python + Docker，本包不是 Node 实现）",
   "keywords": [
     "qqbot",

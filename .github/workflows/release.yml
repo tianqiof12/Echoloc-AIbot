@@ -1,0 +1,96 @@
+name: release
+
+# 打 v* tag 时自动：打包 server / desktop → 建 Release → 挂附件 → 附上校验和。
+# 用仓库自带的 GITHUB_TOKEN（contents: write），不需要任何个人 token。
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "已经存在的 tag，例如 v1.0.0"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve tag and version
+        id: v
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TAG="${{ inputs.tag }}"
+          else
+            TAG="${GITHUB_REF_NAME}"
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "ver=${TAG#v}" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG / ver=${TAG#v}"
+
+      - name: Build packages from the tag
+        run: |
+          set -euo pipefail
+          V="${{ steps.v.outputs.ver }}"
+          T="${{ steps.v.outputs.tag }}"
+          mkdir -p dist
+          git archive --format=tar.gz --prefix="echoloc-server-v$V/" \
+            -o "dist/echoloc-server-v$V.tar.gz" "$T" \
+            server docs README.md THIRD-PARTY-NOTICES.md
+          git archive --format=zip --prefix="echoloc-desktop-v$V/" \
+            -o "dist/echoloc-desktop-v$V.zip" "$T" \
+            desktop README.md THIRD-PARTY-NOTICES.md
+          cd dist
+          sha256sum ./*.tar.gz ./*.zip | tee SHA256SUMS.txt
+          ls -lh
+
+      - name: Create release with assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TAG="${{ steps.v.outputs.tag }}"
+          V="${{ steps.v.outputs.ver }}"
+          SUM=$(cat dist/SHA256SUMS.txt)
+          BODY=$(cat <<EOF
+          两个包都只含源码与配置模板，**不含**运行数据、聊天记录、账号会话和真实密钥。
+
+          ## 下载
+          - \`echoloc-server-v$V.tar.gz\` —— Linux 服务器：LLBot + MaiBot + memwatch + 面板
+          - \`echoloc-desktop-v$V.zip\` —— Windows：pywebview 遥控面板（SSH 隧道）
+
+          ## 校验和
+          \`\`\`
+          $SUM
+          \`\`\`
+
+          ## 快速开始
+          服务器：解压后按 [docs/usage.md](https://github.com/${{ github.repository }}/blob/$TAG/docs/usage.md) 部署，所有 \`CHANGE_ME_*\` 必须先替换。
+
+          桌面端：\`pip install -r requirements.txt\` → \`copy config.example.json config.json\` → 填 server / ssh_key → \`start_desktop.cmd\`。
+
+          桌面端**不跑**麦麦和 LLBot，它通过 SSH 隧道连服务器上已经在跑的那两个 WebUI。连不上时先看状态接口的 \`tunnel_ok\` / \`maibot_ok\`，别看端口有没有 LISTENING。
+
+          ## 上游依赖
+          LLBot / NapCat（OneBot 11 协议端，二选一）+ MaiBot（对话核心）+ SnowLuma 适配器。详见仓库 README 与 THIRD-PARTY-NOTICES.md。
+          EOF
+          )
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG 已存在，只补附件"
+            gh release upload "$TAG" dist/*.tar.gz dist/*.zip dist/SHA256SUMS.txt --clobber
+          else
+            gh release create "$TAG" \
+              dist/*.tar.gz dist/*.zip dist/SHA256SUMS.txt \
+              --title "$TAG —— 回声 Echoloc QQbot" \
+              --notes "$BODY"
+          fi
+          gh release view "$TAG" --json url,assets \
+            --jq '.url, (.assets[] | "  \(.name) \(.size)B")'
