@@ -90,6 +90,8 @@ start_desktop.cmd
 
 没有这些也能跑，只是她会从「刚认识你」开始。
 
-## 许可
+## 许可与第三方组件
 
-尚未选择许可证。在明确之前，默认按「保留所有权利」理解；要复用请先开 issue 说明用途。
+本项目自身代码**尚未选定许可证**，默认按「保留所有权利」理解；想复用、二改或商用，请先开 issue 说明用途。
+
+随仓库分发的第三方组件（SnowLuma 适配器为 **GPL-3.0-or-later**）、运行时镜像、Python 依赖的来源与许可，见 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)。其中 SnowLuma 目录与 MaiBot 补丁文件的许可**不随本仓库的许可改变**。
