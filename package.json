@@ -14,13 +14,13 @@
     "echoloc",
     "cli"
   ],
-  "homepage": "https://github.com/tianqiof12/Echoloc-QQbot#readme",
+  "homepage": "https://github.com/tianqiof12/Echoloc-AIbot#readme",
   "bugs": {
-    "url": "https://github.com/tianqiof12/Echoloc-QQbot/issues"
+    "url": "https://github.com/tianqiof12/Echoloc-AIbot/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tianqiof12/Echoloc-QQbot.git"
+    "url": "git+https://github.com/tianqiof12/Echoloc-AIbot.git"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"

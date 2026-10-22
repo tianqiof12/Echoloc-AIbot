@@ -61,7 +61,7 @@ npx @tianqiof12/echoloc-qqbot doctor    # 环境自检：docker / python / ssh �
 npx @tianqiof12/echoloc-qqbot links     # 所有相关地址
 ```
 
-包页面：https://github.com/tianqiof12/Echoloc-QQbot/pkgs/npm/echoloc-qqbot
+包页面：https://github.com/tianqiof12/Echoloc-AIbot/pkgs/npm/echoloc-qqbot
 
 这个包**只是入口与自检**，不含机器人本体——本体是 Python + Docker，`npm install` 跑不起来它。发布流程在 [`.github/workflows/npm-publish.yml`](.github/workflows/npm-publish.yml)，打 `v*` tag 自动发。
 
