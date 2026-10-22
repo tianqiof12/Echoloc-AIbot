@@ -1970,12 +1970,12 @@ function loadExperiences(){fetch('/api/experiences').then(function(r){return r.j
 function mdEsc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function mdInline(s){
   return mdEsc(s)
-    .replace(/`([^`]+)`/g,'<code style="background:#f2f4f8;border-radius:4px;padding:1px 5px;font-size:12px">$1</code>')
+    .replace(/`([^`]+)`/g,'<code style="background:rgba(128,128,128,.16);border-radius:4px;padding:1px 5px;font-size:12px;color:inherit">$1</code>')
     .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
 }
 function mdToHtml(md){
   var out=[],lines=String(md||'').split(/\r?\n/),inCode=false,code=[];
-  var PRE='<pre style="background:#f7f9fc;border:1px solid #e8edf6;border-radius:8px;padding:10px;overflow:auto;font-size:12px;line-height:1.55;margin:8px 0">';
+  var PRE='<pre style="background:rgba(128,128,128,.10);border:1px solid rgba(128,128,128,.25);border-radius:8px;padding:10px;overflow:auto;font-size:12px;line-height:1.55;margin:8px 0;color:inherit">';
   for(var i=0;i<lines.length;i++){
     var L=lines[i];
     if(/^```/.test(L)){
@@ -1984,32 +1984,32 @@ function mdToHtml(md){
     }
     if(inCode){code.push(L);continue;}
     if(/^\s*$/.test(L)){continue;}
-    if(/^#\s+/.test(L)){out.push('<h2 style="margin:16px 0 8px;font-size:17px">'+mdInline(L.replace(/^#\s+/,''))+'</h2>');continue;}
-    if(/^##\s+/.test(L)){out.push('<h3 style="margin:18px 0 8px;font-size:15px;padding-bottom:6px;border-bottom:1px solid #e8edf6">'+mdInline(L.replace(/^##\s+/,''))+'</h3>');continue;}
-    if(/^###\s+/.test(L)){out.push('<h4 style="margin:12px 0 6px;font-size:13.5px">'+mdInline(L.replace(/^###\s+/,''))+'</h4>');continue;}
-    if(/^>\s?/.test(L)){out.push('<div style="margin:6px 0;padding:6px 10px;border-left:3px solid #cbd5e1;color:#64748b;font-size:12.5px">'+mdInline(L.replace(/^>\s?/,''))+'</div>');continue;}
-    if(/^---+$/.test(L.replace(/\s/g,''))){out.push('<hr style="border:none;border-top:1px solid #e8edf6;margin:14px 0">');continue;}
+    if(/^#\s+/.test(L)){out.push('<h2 style="margin:16px 0 8px;font-size:17px;color:inherit">'+mdInline(L.replace(/^#\s+/,''))+'</h2>');continue;}
+    if(/^##\s+/.test(L)){out.push('<h3 style="margin:18px 0 8px;font-size:15px;padding-bottom:6px;border-bottom:1px solid rgba(128,128,128,.3);color:inherit">'+mdInline(L.replace(/^##\s+/,''))+'</h3>');continue;}
+    if(/^###\s+/.test(L)){out.push('<h4 style="margin:12px 0 6px;font-size:13.5px;color:inherit">'+mdInline(L.replace(/^###\s+/,''))+'</h4>');continue;}
+    if(/^>\s?/.test(L)){out.push('<div style="margin:6px 0;padding:6px 10px;border-left:3px solid rgba(128,128,128,.45);color:inherit;opacity:.75;font-size:12.5px">'+mdInline(L.replace(/^>\s?/,''))+'</div>');continue;}
+    if(/^---+$/.test(L.replace(/\s/g,''))){out.push('<hr style="border:none;border-top:1px solid rgba(128,128,128,.3);margin:14px 0">');continue;}
     if(/^\|/.test(L)){
       var rows=[];
       while(i<lines.length&&/^\|/.test(lines[i])){rows.push(lines[i]);i++;}
       i--;
       var cells=rows.map(function(r){return r.replace(/^\|/,'').replace(/\|$/,'').split('|').map(function(c){return c.trim();});});
-      var html='<table style="border-collapse:collapse;margin:8px 0;font-size:12.5px">';
+      var html='<table style="border-collapse:collapse;margin:8px 0;font-size:12.5px;color:inherit">';
       cells.forEach(function(cs,ri){
         if(ri===1&&cs.every(function(c){return /^:?-{2,}:?$/.test(c);})){return;}
         html+='<tr>';
         cs.forEach(function(c){
           html+=ri===0
-            ?'<th style="border:1px solid #e2e8f0;padding:5px 8px;background:#f7f9fc;text-align:left;font-weight:600">'+mdInline(c)+'</th>'
-            :'<td style="border:1px solid #e2e8f0;padding:5px 8px;vertical-align:top">'+mdInline(c)+'</td>';
+            ?'<th style="border:1px solid rgba(128,128,128,.3);padding:5px 8px;background:rgba(128,128,128,.12);text-align:left;font-weight:600;color:inherit">'+mdInline(c)+'</th>'
+            :'<td style="border:1px solid rgba(128,128,128,.3);padding:5px 8px;vertical-align:top;color:inherit">'+mdInline(c)+'</td>';
         });
         html+='</tr>';
       });
       out.push(html+'</table>');
       continue;
     }
-    if(/^\s*[-*]\s+/.test(L)){out.push('<div style="margin:3px 0 3px 14px;text-indent:-10px">• '+mdInline(L.replace(/^\s*[-*]\s+/,''))+'</div>');continue;}
-    out.push('<p style="margin:6px 0">'+mdInline(L)+'</p>');
+    if(/^\s*[-*]\s+/.test(L)){out.push('<div style="margin:3px 0 3px 14px;text-indent:-10px;color:inherit">• '+mdInline(L.replace(/^\s*[-*]\s+/,''))+'</div>');continue;}
+    out.push('<p style="margin:6px 0;color:inherit">'+mdInline(L)+'</p>');
   }
   if(inCode&&code.length){out.push(PRE+mdEsc(code.join('\n'))+'</pre>');}
   return out.join('');
