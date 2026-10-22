@@ -814,6 +814,24 @@ class Api:
         except Exception as e:
             return {"error": str(e)}
 
+    def get_changelog(self):
+        """更新日志：读服务器上的 /opt/qqbot-panel/CHANGELOG.md。"""
+        path = "/opt/qqbot-panel/CHANGELOG.md"
+        try:
+            with self.remote.lock:
+                sftp = self.remote.connect().open_sftp()
+                try:
+                    with sftp.open(path) as fh:
+                        text = fh.read().decode("utf-8")
+                finally:
+                    try:
+                        sftp.close()
+                    except Exception:
+                        pass
+            return {"ok": True, "text": text}
+        except Exception as e:
+            return {"ok": False, "text": "", "error": str(e)}
+
     def get_experiences(self):
         """全局经验库：不按群隔离，一条经验所有会话共享。"""
         try:
@@ -1059,6 +1077,8 @@ def start_ui_server(html_text, api, host="127.0.0.1", port=0, auth=None):
                     self._send(200, "application/json", json.dumps(api.get_maibot_token(), ensure_ascii=False))
                 elif p == "/api/memories":
                     self._send(200, "application/json", json.dumps(api.get_event_memory(), ensure_ascii=False))
+                elif p == "/api/changelog":
+                    self._send(200, "application/json", json.dumps(api.get_changelog(), ensure_ascii=False))
                 elif p == "/api/experiences":
                     self._send(200, "application/json", json.dumps(api.get_experiences(), ensure_ascii=False))
                 elif p == "/api/token_stats":
@@ -1445,6 +1465,7 @@ html[data-theme="dark"] #groups-table .grp-energy,html[data-theme="dark"] #new-g
       <button class="nav-btn" data-view="affinity">人物好感度</button>
       <button class="nav-btn" data-view="groups">会话设置</button>
       <button class="nav-btn" data-view="maibot">MaiBot 面板</button>
+      <button class="nav-btn" data-view="changelog">更新日志</button>
     </nav>
     <div class="side-bottom">
       <button class="nav-btn settings-btn" data-view="settings" title="设置">
@@ -1673,6 +1694,13 @@ html[data-theme="dark"] #groups-table .grp-energy,html[data-theme="dark"] #new-g
     </section>
     <section id="view-maibot" class="view">
       <iframe id="maibot-frame" src="about:blank"></iframe>
+    </section>
+    <section id="view-changelog" class="view">
+      <div class="panel-pad">
+        <h2>更新日志</h2>
+        <div class="hint" style="margin-bottom:10px">服务器上的实际变更记录：改了什么、为什么、怎么回退。内容来自 <code>/opt/qqbot-panel/CHANGELOG.md</code>。</div>
+        <div id="changelog-body" style="font-size:13px;line-height:1.7"></div>
+      </div>
     </section>
     <section id="view-settings" class="view">
       <div class="panel-pad">
@@ -1938,7 +1966,63 @@ setInterval(loadMute,60000);
 setInterval(loadLlbBotStatus,30000);
 (function(){var b=document.querySelector('.nav-btn[data-view="status"]');if(b)b.addEventListener('click',function(){loadStatus();loadStorage();});})();
 function loadExperiences(){fetch('/api/experiences').then(function(r){return r.json()}).then(function(d){var box=document.getElementById('experiences-list');if(!box)return;var items=(d&&d.items)||[];if(!items.length){box.innerHTML='<div class="card hint">还没有经验。等它遇到不懂的东西、联网查到或被人解释清楚，就会记在这里。</div>';return;}box.innerHTML=items.map(function(it){var ok=it.status==='resolved';var color=ok?'#2e9d5a':'#d68910';var src=it.source==='later'?'群友解释':(it.source==='search'?'联网查证':'记录');var links=(it.sources||[]).slice(0,3).map(function(h){var u=String(h.url||'');var t=String(h.title||u||'来源');return u?('<a href="'+esc(u)+'" target="_blank" rel="noopener" style="color:#2f6fed;text-decoration:none">'+esc(t)+'</a>'):esc(t);}).join(' · ');return '<div class="card" style="margin-bottom:10px"><div style="display:flex;gap:10px;align-items:baseline;flex-wrap:wrap"><span style="color:'+color+';font-weight:700;font-size:12px;border:1px solid '+color+';border-radius:4px;padding:0 5px">'+(ok?'已搞懂':'待解')+'</span><b style="font-size:14px">'+esc(it.question||'（无问题）')+'</b><span class="hint" style="margin-left:auto">'+esc(ago(it.updated))+'</span></div><div style="margin-top:8px;font-size:13px;line-height:1.7;color:#3a4456">'+(ok?esc(it.learned):'<span class="hint">还没搞懂</span>')+'</div><div class="hint" style="margin-top:7px">'+esc(src)+(it.topic?(' · 话题 '+esc(it.topic)):'')+(it.hits>1?(' · 出现 '+it.hits+' 次'):'')+(links?(' · '+links):'')+'</div></div>';}).join('');}).catch(function(){var box=document.getElementById('experiences-list');if(box)box.innerHTML='<div class="card hint">读取经验失败</div>';});}
-var VIEW_LOADERS={status:loadStatus,energy:loadEnergy,profiles:loadProfiles,events:loadEvents,topics:loadTopics,network:loadNetwork,experiences:loadExperiences,tokens:loadTokenStats,affinity:loadAffinity,groups:loadGroups,settings:function(){var cb=document.getElementById('theme-dark');if(cb)cb.checked=(document.documentElement.dataset.theme==='dark');}};
+/* ============ 更新日志（读 /opt/qqbot-panel/CHANGELOG.md） ============ */
+function mdEsc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function mdInline(s){
+  return mdEsc(s)
+    .replace(/`([^`]+)`/g,'<code style="background:#f2f4f8;border-radius:4px;padding:1px 5px;font-size:12px">$1</code>')
+    .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+}
+function mdToHtml(md){
+  var out=[],lines=String(md||'').split(/\r?\n/),inCode=false,code=[];
+  var PRE='<pre style="background:#f7f9fc;border:1px solid #e8edf6;border-radius:8px;padding:10px;overflow:auto;font-size:12px;line-height:1.55;margin:8px 0">';
+  for(var i=0;i<lines.length;i++){
+    var L=lines[i];
+    if(/^```/.test(L)){
+      if(inCode){out.push(PRE+mdEsc(code.join('\n'))+'</pre>');code=[];inCode=false;} else {inCode=true;}
+      continue;
+    }
+    if(inCode){code.push(L);continue;}
+    if(/^\s*$/.test(L)){continue;}
+    if(/^#\s+/.test(L)){out.push('<h2 style="margin:16px 0 8px;font-size:17px">'+mdInline(L.replace(/^#\s+/,''))+'</h2>');continue;}
+    if(/^##\s+/.test(L)){out.push('<h3 style="margin:18px 0 8px;font-size:15px;padding-bottom:6px;border-bottom:1px solid #e8edf6">'+mdInline(L.replace(/^##\s+/,''))+'</h3>');continue;}
+    if(/^###\s+/.test(L)){out.push('<h4 style="margin:12px 0 6px;font-size:13.5px">'+mdInline(L.replace(/^###\s+/,''))+'</h4>');continue;}
+    if(/^>\s?/.test(L)){out.push('<div style="margin:6px 0;padding:6px 10px;border-left:3px solid #cbd5e1;color:#64748b;font-size:12.5px">'+mdInline(L.replace(/^>\s?/,''))+'</div>');continue;}
+    if(/^---+$/.test(L.replace(/\s/g,''))){out.push('<hr style="border:none;border-top:1px solid #e8edf6;margin:14px 0">');continue;}
+    if(/^\|/.test(L)){
+      var rows=[];
+      while(i<lines.length&&/^\|/.test(lines[i])){rows.push(lines[i]);i++;}
+      i--;
+      var cells=rows.map(function(r){return r.replace(/^\|/,'').replace(/\|$/,'').split('|').map(function(c){return c.trim();});});
+      var html='<table style="border-collapse:collapse;margin:8px 0;font-size:12.5px">';
+      cells.forEach(function(cs,ri){
+        if(ri===1&&cs.every(function(c){return /^:?-{2,}:?$/.test(c);})){return;}
+        html+='<tr>';
+        cs.forEach(function(c){
+          html+=ri===0
+            ?'<th style="border:1px solid #e2e8f0;padding:5px 8px;background:#f7f9fc;text-align:left;font-weight:600">'+mdInline(c)+'</th>'
+            :'<td style="border:1px solid #e2e8f0;padding:5px 8px;vertical-align:top">'+mdInline(c)+'</td>';
+        });
+        html+='</tr>';
+      });
+      out.push(html+'</table>');
+      continue;
+    }
+    if(/^\s*[-*]\s+/.test(L)){out.push('<div style="margin:3px 0 3px 14px;text-indent:-10px">• '+mdInline(L.replace(/^\s*[-*]\s+/,''))+'</div>');continue;}
+    out.push('<p style="margin:6px 0">'+mdInline(L)+'</p>');
+  }
+  if(inCode&&code.length){out.push(PRE+mdEsc(code.join('\n'))+'</pre>');}
+  return out.join('');
+}
+function loadChangelog(){
+  var box=document.getElementById('changelog-body');if(!box)return;
+  box.innerHTML='<div class="hint">加载中…</div>';
+  fetch('/api/changelog').then(function(r){return r.json();}).then(function(d){
+    if(!d||d.ok===false){box.innerHTML='<div class="hint">读取失败：'+mdEsc((d&&d.error)||'未知错误')+'</div>';return;}
+    box.innerHTML=mdToHtml(d.text||'');
+  }).catch(function(e){box.innerHTML='<div class="hint">读取失败：'+mdEsc(String(e))+'</div>';});
+}
+var VIEW_LOADERS={status:loadStatus,energy:loadEnergy,profiles:loadProfiles,events:loadEvents,topics:loadTopics,network:loadNetwork,experiences:loadExperiences,tokens:loadTokenStats,affinity:loadAffinity,groups:loadGroups,changelog:loadChangelog,settings:function(){var cb=document.getElementById('theme-dark');if(cb)cb.checked=(document.documentElement.dataset.theme==='dark');}};
 document.querySelectorAll('.nav-btn').forEach(function(b){b.addEventListener('click',function(){var f=VIEW_LOADERS[b.dataset.view];if(f)setTimeout(f,30);});});
 setInterval(function(){var a=document.querySelector('.nav-btn.active');if(!a)return;var v=a.dataset.view;if(v==='status')loadStatus();else if(v==='events')loadEvents();else if(v==='topics')loadTopics();else if(v==='affinity')loadAffinity();else if(v==='tokens')loadTokenStats();},20000);
 if(location.hash){var _hv=location.hash.slice(1);var _hb=document.querySelector('.nav-btn[data-view="'+_hv+'"]');if(_hb){setTimeout(function(){_hb.click();},60);}}

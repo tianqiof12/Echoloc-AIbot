@@ -128,6 +128,12 @@ start_desktop.cmd
 
 主页标题用 **Echoloc AIbot**。但仓库里的 `/opt/qqbot-panel/`、`qqbot-panel.service`、`QQBOT_*` 环境变量、`QQbotPanel.apk` 仍是旧名——它们是**服务器上正在跑的契约**，改名等于让已有部署对不上，所以只改展示、不动实例。
 
+## 更新日志
+
+服务器上的实际变更记录：改了什么、为什么、怎么回退，包含三次失败的调优尝试与踩过的坑。见 [docs/CHANGELOG.md](docs/CHANGELOG.md)。
+
+面板左侧「更新日志」页读的是同一份内容（服务器上的 `/opt/qqbot-panel/CHANGELOG.md`），改文件后刷新即可看到。
+
 ## 数据与迁移
 
 本包**不含**运行数据、日志、聊天记录、账号会话和真实密钥。想接回原来的记忆，从旧机单独复制：
